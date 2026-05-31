@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "predev": "node ../scripts/free-dev-ports.mjs --server-only",
+    "postinstall": "npm run build",
     "dev": "npm run dev:raw",
     "dev:raw": "tsx watch src/index.ts",
     "dev:free-port": "node ../scripts/free-dev-ports.mjs --server-only",
