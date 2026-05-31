@@ -1,8 +1,10 @@
+import 'express-async-errors';
 import express from 'express';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import { env } from './config/env';
 import { uploadDir } from './config/uploads';
+import { db } from './lib/db';
 import { adminRouter } from './routes/admin';
 import { authRouter } from './routes/auth';
 import { adminCategoriesRouter, categoriesRouter } from './routes/categories';
@@ -56,6 +58,20 @@ app.use('/uploads', express.static(uploadDir));
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', service: 'GoldenShifa API' });
+});
+
+app.get('/api/db-health', async (_req, res) => {
+  try {
+    await db.execute('SELECT 1');
+    res.json({ status: 'ok', database: 'connected' });
+  } catch (error) {
+    const err = error as { code?: string; message?: string };
+    res.status(500).json({
+      status: 'error',
+      code: err.code || 'DB_ERROR',
+      message: err.message || 'Database connection failed'
+    });
+  }
 });
 
 app.use(
