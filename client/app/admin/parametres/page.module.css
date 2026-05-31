@@ -1,0 +1,568 @@
+/* app/admin/parametres/page.module.css */
+
+/* ── Page header ─────────────────────────────────────────────── */
+.pageHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 20px 24px;
+  border: 1px solid rgba(217, 154, 32, 0.16);
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0e0a04 0%, #080602 100%);
+  overflow: hidden;
+}
+
+.pageHeaderGlow {
+  position: absolute;
+  top: -40px;
+  left: -40px;
+  width: 240px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(226, 164, 42, 0.1) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.pageHeaderLeft {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.pageHeaderIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(217, 154, 32, 0.3);
+  background: rgba(217, 154, 32, 0.1);
+  color: #e2a42a;
+  flex-shrink: 0;
+}
+
+.pageHeaderTitle {
+  margin: 0 0 4px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fffaf1;
+}
+
+.pageHeaderSub {
+  margin: 0;
+  color: rgba(255, 247, 229, 0.4);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Layout ──────────────────────────────────────────────────── */
+.layout {
+  display: grid;
+  gap: 16px;
+}
+
+/* ── Panel (shared) ──────────────────────────────────────────── */
+.panel {
+  position: relative;
+  border: 1px solid rgba(217, 154, 32, 0.15);
+  border-radius: 12px;
+  background: linear-gradient(145deg, #0e0a04 0%, #080602 100%);
+  overflow: hidden;
+}
+
+.panelGlow {
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 260px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(226, 164, 42, 0.07) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.panelHeader {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(217, 154, 32, 0.1);
+}
+
+.panelIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid rgba(217, 154, 32, 0.28);
+  background: rgba(217, 154, 32, 0.1);
+  color: #e2a42a;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.panelTitle {
+  margin: 0 0 2px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fffaf1;
+}
+
+.panelSub {
+  margin: 0;
+  color: rgba(255, 247, 229, 0.42);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+/* ── Delivery form ───────────────────────────────────────────── */
+.form {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 22px 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldLabel {
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 247, 229, 0.42);
+}
+
+/* payment display box */
+.paymentBox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid rgba(217, 154, 32, 0.2);
+  border-radius: 9px;
+  background: rgba(217, 154, 32, 0.06);
+}
+
+.paymentIcon {
+  color: #e2a42a;
+  flex-shrink: 0;
+}
+
+.paymentTitle {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fffaf1;
+}
+
+.paymentSub {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: rgba(255, 247, 229, 0.36);
+}
+
+/* input */
+.inputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputPrefix {
+  position: absolute;
+  left: 12px;
+  color: rgba(255, 247, 229, 0.3);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  height: 40px;
+  padding: 0 14px 0 44px;
+  border: 1px solid rgba(217, 154, 32, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 247, 229, 0.04);
+  color: #fffaf1;
+  font-size: 13px;
+  outline: none;
+  appearance: textfield;
+  transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.input::placeholder {
+  color: rgba(255, 247, 229, 0.22);
+}
+
+.input:focus {
+  border-color: rgba(217, 154, 32, 0.5);
+  background: rgba(217, 154, 32, 0.06);
+  box-shadow: 0 0 0 3px rgba(217, 154, 32, 0.1);
+}
+
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: rgba(255, 247, 229, 0.34);
+  font-size: 12px;
+}
+
+.hint svg {
+  flex-shrink: 0;
+  color: rgba(255, 247, 229, 0.24);
+}
+
+.hint strong {
+  color: #e2a42a;
+  font-weight: 800;
+}
+
+/* checkbox */
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid rgba(217, 154, 32, 0.16);
+  border-radius: 9px;
+  background: rgba(217, 154, 32, 0.05);
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.checkboxLabel:hover {
+  border-color: rgba(217, 154, 32, 0.32);
+  background: rgba(217, 154, 32, 0.09);
+}
+
+.checkboxNative {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkboxBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1px solid rgba(217, 154, 32, 0.34);
+  background: rgba(217, 154, 32, 0.07);
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.checkboxNative:checked ~ .checkboxBox {
+  background: linear-gradient(135deg, #e2a42a, #f6c75b);
+  border-color: #e2a42a;
+}
+
+.checkboxNative:checked ~ .checkboxBox::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 9px;
+  border: 2px solid #231405;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.checkboxText {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 247, 229, 0.78);
+}
+
+.checkboxText small {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 247, 229, 0.34);
+}
+
+.checkboxLabel:has(.checkboxNative:checked) {
+  border-color: rgba(217, 154, 32, 0.36);
+  background: rgba(217, 154, 32, 0.09);
+}
+
+/* form footer */
+.formFooter {
+  padding-top: 4px;
+  border-top: 1px solid rgba(217, 154, 32, 0.1);
+}
+
+/* submit button */
+.submitBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #e2a42a, #f6c75b);
+  color: #231405;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(185, 120, 20, 0.28);
+  transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.submitBtn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.submitBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(185, 120, 20, 0.4);
+}
+
+.submitBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Image forms ─────────────────────────────────────────────── */
+.imageForms {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  padding: 22px 24px;
+}
+
+.imageForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid rgba(217, 154, 32, 0.13);
+  border-radius: 10px;
+  background: rgba(255, 247, 229, 0.02);
+  transition: border-color 200ms ease;
+}
+
+.imageForm:hover {
+  border-color: rgba(217, 154, 32, 0.24);
+}
+
+/* image preview */
+.previewWrap {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(217, 154, 32, 0.2);
+  background: rgba(217, 154, 32, 0.05);
+}
+
+.previewImg {
+  object-fit: cover;
+}
+
+.previewEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 8px;
+  color: rgba(255, 247, 229, 0.24);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* overlay badge on preview */
+.previewBadge {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 2;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(217, 154, 32, 0.36);
+  background: rgba(5, 4, 2, 0.7);
+  backdrop-filter: blur(6px);
+  color: #e2a42a;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* controls below preview */
+.imageControls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.imageDesc {
+  margin: 0;
+  color: rgba(255, 247, 229, 0.42);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+/* file input */
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fileLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border: 1px solid rgba(217, 154, 32, 0.26);
+  border-radius: 8px;
+  background: rgba(217, 154, 32, 0.06);
+  color: rgba(255, 247, 229, 0.62);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.fileLabel:hover {
+  background: rgba(217, 154, 32, 0.13);
+  border-color: rgba(217, 154, 32, 0.44);
+  color: #e2a42a;
+}
+
+/* upload button */
+.uploadBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #e2a42a, #f6c75b);
+  color: #231405;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(185, 120, 20, 0.26);
+  transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.uploadBtn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.uploadBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(185, 120, 20, 0.38);
+}
+
+.uploadBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .imageForms {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .panelHeader {
+    padding: 16px 18px;
+  }
+
+  .form {
+    padding: 18px;
+  }
+
+  .imageForms {
+    padding: 16px 18px;
+    gap: 16px;
+  }
+
+  .imageForm {
+    padding: 14px;
+  }
+
+  .submitBtn {
+    width: 100%;
+  }
+}

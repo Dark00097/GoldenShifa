@@ -1,0 +1,68 @@
+.selector {
+  display: inline-grid;
+  grid-template-columns: 2.6rem 2.6rem 2.6rem;
+  align-items: center;
+  height: 2.75rem;
+  overflow: hidden;
+  border: 1px solid #f4c44f;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #24180f;
+}
+
+.button {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: #85460e;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.button:hover {
+  background: #fff7e8;
+  color: #d28d22;
+}
+
+.value {
+  display: grid;
+  min-width: 0;
+  height: 100%;
+  place-items: center;
+  color: #24180f;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.compact {
+  grid-template-columns: 1.75rem 1.85rem 1.75rem;
+  height: 2rem;
+  border-color: rgba(217, 154, 32, 0.42);
+  border-radius: 0.55rem;
+  background: rgba(217, 154, 32, 0.08);
+  color: #fffaf1;
+  box-shadow: inset 0 1px 0 rgba(255, 247, 229, 0.04);
+}
+
+.compact .button {
+  color: #e2a42a;
+}
+
+.compact .button:hover {
+  background: rgba(217, 154, 32, 0.16);
+  color: #f6c75b;
+}
+
+.compact .value {
+  color: #fffaf1;
+  font-size: 0.8125rem;
+  background: rgba(5, 4, 2, 0.34);
+  border-left: 1px solid rgba(217, 154, 32, 0.16);
+  border-right: 1px solid rgba(217, 154, 32, 0.16);
+}
+
+.compact .button svg {
+  width: 13px;
+  height: 13px;
+}

@@ -1,0 +1,15 @@
+node_modules
+.next
+dist
+.env
+.env.local
+.env.*.local
+uploads/*
+!uploads/.gitkeep
+*.log
+*.tsbuildinfo
+coverage
+.codex-logs
+deploy-packages
+client/assets/Downloads
+mobile-home-check.png

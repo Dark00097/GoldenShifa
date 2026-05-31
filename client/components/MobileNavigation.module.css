@@ -1,0 +1,71 @@
+.overlay {
+  touch-action: pan-y;
+}
+
+.panel {
+  margin-left: auto;
+  height: 100%;
+  width: min(330px, 86vw);
+  border-left: 1px solid rgba(218, 147, 25, 0.24);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(218, 147, 25, 0.17), transparent 34%),
+    #070805;
+  box-shadow: -24px 0 70px rgba(0, 0, 0, 0.42);
+  padding: 20px;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #dda12b;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.logoImage {
+  display: block;
+  width: 48px;
+  height: 45px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.close {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(218, 147, 25, 0.35);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff7df;
+}
+
+.links {
+  display: grid;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.links a {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff7df;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 14px 4px;
+}
+
+.links a:hover {
+  color: #dda12b;
+}
