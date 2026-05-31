@@ -1,0 +1,305 @@
+/* components/CategoryCard.module.css */
+
+/* ── Base card ─────────────────────────────────────────────── */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: 14px;
+  overflow: hidden;
+  text-decoration: none;
+  border: 1px solid rgba(217, 154, 32, 0.14);
+  background: #0c0904;
+  transition:
+    transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 300ms ease,
+    box-shadow 300ms ease;
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.013);
+  border-color: rgba(217, 154, 32, 0.5);
+  box-shadow:
+    0 28px 64px rgba(0, 0, 0, 0.58),
+    0 0 0 1px rgba(217, 154, 32, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* featured card is taller */
+.featured {
+  min-height: 420px;
+}
+
+/* ── Image ─────────────────────────────────────────────────── */
+.image {
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  transition: transform 640ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card:hover .image {
+  transform: scale(1.09);
+}
+
+/* ── Overlays ──────────────────────────────────────────────── */
+
+/* base dark tint */
+.overlayDark {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(4, 3, 1, 0.35);
+}
+
+/* strong bottom-up gradient */
+.overlayGrad {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 4, 2, 0.0)  0%,
+    rgba(5, 4, 2, 0.08) 28%,
+    rgba(5, 4, 2, 0.7)  60%,
+    rgba(5, 4, 2, 0.97) 100%
+  );
+}
+
+/* amber corner glow */
+.overlayAmber {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background:
+    radial-gradient(ellipse at 0% 100%, rgba(180, 100, 10, 0.2) 0%, transparent 52%),
+    radial-gradient(ellipse at 100% 0%,  rgba(180, 100, 10, 0.1) 0%, transparent 44%);
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+
+.card:hover .overlayAmber {
+  opacity: 1;
+}
+
+/* ── Top row ───────────────────────────────────────────────── */
+.topRow {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px 0;
+}
+
+/* count badge — dark glass pill */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border: 1px solid rgba(217, 154, 32, 0.36);
+  border-radius: 999px;
+  background: rgba(5, 4, 2, 0.6);
+  backdrop-filter: blur(8px);
+  color: #e2a42a;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* featured gold pill */
+.featuredPill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #e2a42a, #f6c75b);
+  color: #231405;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: 0 4px 14px rgba(201, 125, 10, 0.38);
+}
+
+/* ── Bottom content ────────────────────────────────────────── */
+.bottom {
+  position: relative;
+  z-index: 10;
+  padding: 0 20px 20px;
+}
+
+/* growing amber accent bar */
+.accentBar {
+  width: 32px;
+  height: 2px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, #e2a42a, #f6c75b);
+  transition: width 300ms ease;
+}
+
+.card:hover .accentBar {
+  width: 56px;
+}
+
+/* category name */
+.name {
+  margin: 0 0 8px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 21px;
+  font-weight: 500;
+  color: #fffaf1;
+  line-height: 1.22;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.65);
+  transition: color 240ms ease;
+}
+
+.card:hover .name {
+  color: #fff;
+}
+
+/* featured bigger title */
+.featured .name {
+  font-size: 29px;
+}
+
+/* description */
+.desc {
+  margin: 0 0 14px;
+  color: rgba(255, 247, 229, 0.58);
+  font-size: 13px;
+  line-height: 1.72;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── CTA row ───────────────────────────────────────────────── */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 2px;
+}
+
+.ctaLabel {
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #e2a42a;
+  transition: color 220ms ease;
+}
+
+.card:hover .ctaLabel {
+  color: #f6c75b;
+}
+
+/* circular arrow button */
+.ctaCircle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(217, 154, 32, 0.34);
+  background: rgba(217, 154, 32, 0.08);
+  color: #e2a42a;
+  transition:
+    transform 240ms ease,
+    background 240ms ease,
+    border-color 240ms ease;
+}
+
+.card:hover .ctaCircle {
+  transform: translateX(4px);
+  background: rgba(217, 154, 32, 0.2);
+  border-color: rgba(217, 154, 32, 0.62);
+}
+
+/* ── Shine sweep ───────────────────────────────────────────── */
+.shine {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent   0%,
+    transparent   38%,
+    rgba(255, 255, 255, 0.042) 50%,
+    transparent   62%,
+    transparent   100%
+  );
+  transform: translateX(-110%);
+  transition: transform 0ms linear;
+}
+
+.card:hover .shine {
+  transform: translateX(110%);
+  transition: transform 580ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .featured .name {
+    font-size: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    min-height: 270px;
+    border-radius: 12px;
+  }
+
+  .featured {
+    min-height: 340px;
+  }
+
+  .name {
+    font-size: 19px;
+  }
+
+  .featured .name {
+    font-size: 23px;
+  }
+}
+
+@media (max-width: 520px) {
+  .card {
+    min-height: 250px;
+    border-radius: 11px;
+  }
+
+  .featured {
+    min-height: 290px;
+  }
+
+  .name {
+    font-size: 17px;
+  }
+
+  .featured .name {
+    font-size: 20px;
+  }
+
+  .bottom {
+    padding: 0 15px 16px;
+  }
+
+  .topRow {
+    padding: 13px 15px 0;
+  }
+}

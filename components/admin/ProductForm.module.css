@@ -1,0 +1,508 @@
+/* ── Form shell ──────────────────────────────────────────────── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SECTIONS
+══════════════════════════════════════════════════════════════ */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px 24px;
+  border: 1px solid rgba(217, 154, 32, 0.14);
+  border-radius: 12px;
+  background: linear-gradient(145deg, #0e0a04 0%, #080602 100%);
+}
+
+/* section header row */
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(217, 154, 32, 0.1);
+}
+
+.sectionIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid rgba(217, 154, 32, 0.28);
+  background: rgba(217, 154, 32, 0.1);
+  color: #e2a42a;
+  flex-shrink: 0;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #fffaf1;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GRIDS
+══════════════════════════════════════════════════════════════ */
+.grid2 {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+.grid3 {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+.grid4 {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (min-width: 640px) {
+  .grid2 { grid-template-columns: repeat(2, 1fr); }
+  .grid3 { grid-template-columns: repeat(3, 1fr); }
+  .grid4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FIELDS
+══════════════════════════════════════════════════════════════ */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 247, 229, 0.44);
+}
+
+/* shared input / select / textarea base */
+.input,
+.select,
+.textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid rgba(217, 154, 32, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 247, 229, 0.04);
+  color: #fffaf1;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+  appearance: none;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: rgba(255, 247, 229, 0.22);
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: rgba(217, 154, 32, 0.52);
+  background: rgba(217, 154, 32, 0.06);
+  box-shadow: 0 0 0 3px rgba(217, 154, 32, 0.1);
+}
+
+.textarea {
+  resize: vertical;
+  line-height: 1.7;
+  min-height: 110px;
+}
+
+/* select arrow */
+.select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,247,229,0.3)' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.select option {
+  background: #0e0a04;
+  color: #fffaf1;
+}
+
+/* input with prefix (TND) */
+.inputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputPrefix {
+  position: absolute;
+  left: 12px;
+  color: rgba(255, 247, 229, 0.3);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+  user-select: none;
+}
+
+.inputWithPrefix {
+  padding-left: 44px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   IMAGE MAIN
+══════════════════════════════════════════════════════════════ */
+.imageMainRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.imagePreview {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(217, 154, 32, 0.28);
+  background: rgba(217, 154, 32, 0.06);
+  flex-shrink: 0;
+}
+
+.imagePreviewImg {
+  object-fit: cover;
+}
+
+.imagePreviewEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 140px;
+  height: 140px;
+  border-radius: 10px;
+  border: 1px dashed rgba(217, 154, 32, 0.28);
+  background: rgba(217, 154, 32, 0.04);
+  color: rgba(255, 247, 229, 0.28);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.imageMainInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  min-width: 200px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FILE INPUT (styled label)
+══════════════════════════════════════════════════════════════ */
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fileLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border: 1px solid rgba(217, 154, 32, 0.28);
+  border-radius: 8px;
+  background: rgba(217, 154, 32, 0.07);
+  color: rgba(255, 247, 229, 0.7);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  width: fit-content;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.fileLabel:hover {
+  background: rgba(217, 154, 32, 0.14);
+  border-color: rgba(217, 154, 32, 0.48);
+  color: #e2a42a;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HINTS
+══════════════════════════════════════════════════════════════ */
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  color: rgba(255, 247, 229, 0.36);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.hint svg {
+  flex-shrink: 0;
+  color: rgba(255, 247, 229, 0.28);
+}
+
+.hintError {
+  color: #fca5a5;
+}
+
+.hintError svg {
+  color: #fca5a5;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GALLERY GRID
+══════════════════════════════════════════════════════════════ */
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (min-width: 640px) {
+  .galleryGrid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.galleryCard {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(217, 154, 32, 0.16);
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(14, 10, 4, 0.6);
+  transition: border-color 200ms ease;
+}
+
+.galleryCard:hover {
+  border-color: rgba(217, 154, 32, 0.32);
+}
+
+.galleryCardImage {
+  position: relative;
+  aspect-ratio: 1;
+  background: rgba(217, 154, 32, 0.05);
+}
+
+.galleryImg {
+  object-fit: cover;
+}
+
+.deleteImageBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-top: 1px solid rgba(217, 154, 32, 0.1);
+  background: transparent;
+  color: rgba(239, 68, 68, 0.7);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.deleteImageBtn:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+}
+
+.deleteImageBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CHECKBOXES
+══════════════════════════════════════════════════════════════ */
+.checkboxRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+  min-width: 200px;
+  padding: 14px 16px;
+  border: 1px solid rgba(217, 154, 32, 0.16);
+  border-radius: 10px;
+  background: rgba(217, 154, 32, 0.05);
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.checkboxLabel:hover {
+  border-color: rgba(217, 154, 32, 0.34);
+  background: rgba(217, 154, 32, 0.09);
+}
+
+/* hide real checkbox */
+.checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* custom checkbox box */
+.checkboxBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1px solid rgba(217, 154, 32, 0.36);
+  background: rgba(217, 154, 32, 0.07);
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+/* checked state via sibling */
+.checkbox:checked ~ .checkboxBox {
+  background: linear-gradient(135deg, #e2a42a, #f6c75b);
+  border-color: #e2a42a;
+}
+
+.checkbox:checked ~ .checkboxBox::after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 9px;
+  border: 2px solid #231405;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.checkboxText {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 247, 229, 0.78);
+  line-height: 1.3;
+}
+
+.checkboxText small {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 247, 229, 0.36);
+}
+
+/* checked label highlight */
+.checkboxLabel:has(.checkbox:checked) {
+  border-color: rgba(217, 154, 32, 0.38);
+  background: rgba(217, 154, 32, 0.09);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FORM FOOTER
+══════════════════════════════════════════════════════════════ */
+.formFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 18px 24px;
+  border: 1px solid rgba(217, 154, 32, 0.14);
+  border-radius: 12px;
+  background: linear-gradient(145deg, #0e0a04 0%, #080602 100%);
+}
+
+.cancelBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 20px;
+  border: 1px solid rgba(217, 154, 32, 0.22);
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(255, 247, 229, 0.5);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.cancelBtn:hover {
+  background: rgba(217, 154, 32, 0.07);
+  border-color: rgba(217, 154, 32, 0.38);
+  color: rgba(255, 247, 229, 0.8);
+}
+
+/* matches primaryAction exactly */
+.submitBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #e2a42a, #f6c75b);
+  color: #231405;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(185, 120, 20, 0.28);
+  transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.submitBtn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.submitBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(185, 120, 20, 0.4);
+}
+
+.submitBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}

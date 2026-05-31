@@ -1,0 +1,210 @@
+/* components/admin/AdminProtected.module.css */
+
+/* ── Full page ───────────────────────────────────────────────── */
+.page {
+  position: relative;
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  overflow: hidden;
+  background: #050402;
+}
+
+/* deep layered dark base */
+.pageBg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #0e0a04 0%, #050402 52%, #080602 100%);
+  z-index: 0;
+}
+
+/* central amber glow */
+.pageGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 700px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(226, 164, 42, 0.1) 0%,
+    rgba(226, 164, 42, 0.04) 48%,
+    transparent 72%
+  );
+  pointer-events: none;
+  filter: blur(4px);
+  z-index: 0;
+}
+
+/* honeycomb patterns */
+.patternLeft,
+.patternRight {
+  position: absolute;
+  top: 0;
+  width: 280px;
+  height: 200px;
+  pointer-events: none;
+  opacity: 0.35;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0 11px, rgba(177,111,23,0.3) 12px 14px, transparent 15px) 0 0 / 32px 28px,
+    radial-gradient(circle at 50% 50%, transparent 0 11px, rgba(177,111,23,0.16) 12px 14px, transparent 15px) 16px 14px / 32px 28px;
+  z-index: 0;
+}
+.patternLeft {
+  left: 0;
+  mask-image: linear-gradient(135deg, black 0%, black 30%, transparent 72%);
+}
+.patternRight {
+  right: 0;
+  transform: scaleX(-1);
+  mask-image: linear-gradient(135deg, black 0%, black 30%, transparent 72%);
+}
+
+/* ── Card ────────────────────────────────────────────────────── */
+.card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 40px 48px;
+  border: 1px solid rgba(217, 154, 32, 0.18);
+  border-radius: 16px;
+  background: linear-gradient(145deg, #0e0a04 0%, #080602 100%);
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(217, 154, 32, 0.08) inset;
+  text-align: center;
+  min-width: 300px;
+  overflow: hidden;
+}
+
+/* inner amber glow */
+.cardGlow {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  translate: -50% 0;
+  width: 260px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(226, 164, 42, 0.12) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Brand icon ──────────────────────────────────────────────── */
+.iconWrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  border: 1px solid rgba(217, 154, 32, 0.38);
+  background: linear-gradient(
+    135deg,
+    rgba(226, 164, 42, 0.16) 0%,
+    rgba(226, 164, 42, 0.06) 100%
+  );
+  margin-bottom: 4px;
+}
+
+.iconHex {
+  color: #e2a42a;
+}
+
+/* ── Spinner ─────────────────────────────────────────────────── */
+.spinnerWrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(217, 154, 32, 0.12);
+  border-top-color: #e2a42a;
+  border-right-color: rgba(217, 154, 32, 0.4);
+  animation: spin 900ms linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Text ────────────────────────────────────────────────────── */
+.title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fffaf1;
+  line-height: 1.2;
+}
+
+.sub {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: rgba(255, 247, 229, 0.4);
+  font-size: 13px;
+  line-height: 1.6;
+  max-width: 240px;
+}
+
+/* ── Animated dots ───────────────────────────────────────────── */
+.dots {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(217, 154, 32, 0.5);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+  background: rgba(217, 154, 32, 0.65);
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+  background: rgba(217, 154, 32, 0.5);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(0.75);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}

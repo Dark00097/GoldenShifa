@@ -1,0 +1,250 @@
+/* components/OrderSummary.module.css */
+
+/* ── Shell ───────────────────────────────────────────────────── */
+.summary {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid rgba(217, 154, 32, 0.18);
+  border-radius: 14px;
+  background: linear-gradient(145deg, #0e0a04 0%, #080602 100%);
+  overflow: hidden;
+  height: fit-content;
+  /* sticky on desktop */
+  position: sticky;
+  top: 24px;
+}
+
+.summaryGlow {
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  translate: -50% 0;
+  width: 280px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(226, 164, 42, 0.1) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+.summaryHeader {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(217, 154, 32, 0.1);
+}
+
+.summaryIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid rgba(217, 154, 32, 0.28);
+  background: rgba(217, 154, 32, 0.1);
+  color: #e2a42a;
+  flex-shrink: 0;
+}
+
+.summaryTitle {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: #fffaf1;
+}
+
+/* ── Items list ──────────────────────────────────────────────── */
+.items {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(217, 154, 32, 0.08);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(217, 154, 32, 0.06);
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.itemLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.itemImageWrap {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  overflow: hidden;
+  border: 1px solid rgba(217, 154, 32, 0.24);
+  border-radius: 10px;
+  background: rgba(217, 154, 32, 0.08);
+}
+
+.itemImage {
+  object-fit: cover;
+}
+
+.itemQty {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 5px;
+  background: rgba(11, 7, 2, 0.78);
+  border: 1px solid rgba(226, 164, 42, 0.5);
+  color: #f4bd42;
+  font-size: 10px;
+  font-weight: 900;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.24);
+}
+
+.itemName {
+  color: rgba(255, 247, 229, 0.72);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+
+  /* clamp to 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.itemPrice {
+  color: #fffaf1;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Totals ──────────────────────────────────────────────────── */
+.totals {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(217, 154, 32, 0.1);
+}
+
+.totalRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+}
+
+.totalRowIcon {
+  display: flex;
+  align-items: center;
+  color: rgba(255, 247, 229, 0.24);
+  flex-shrink: 0;
+}
+
+.totalLabel {
+  flex: 1;
+  color: rgba(255, 247, 229, 0.52);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.totalValue {
+  font-size: 13px;
+  font-weight: 800;
+  color: rgba(255, 247, 229, 0.8);
+  white-space: nowrap;
+}
+
+.totalDiscount {
+  color: #86efac;
+}
+
+.totalFree {
+  color: #86efac;
+}
+
+/* ── Grand total ─────────────────────────────────────────────── */
+.grandTotal {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.grandTotalGlow {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  translate: -50% 0;
+  width: 200px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(226, 164, 42, 0.12) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.grandTotalLabel {
+  position: relative;
+  z-index: 1;
+  font-size: 14px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 247, 229, 0.56);
+}
+
+.grandTotalValue {
+  position: relative;
+  z-index: 1;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: #e2a42a;
+  line-height: 1;
+  text-shadow: 0 0 24px rgba(226, 164, 42, 0.3);
+}
