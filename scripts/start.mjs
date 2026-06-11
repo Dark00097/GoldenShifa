@@ -6,7 +6,7 @@ const port = process.env.PORT || process.env.NEXT_PORT || '3001';
 
 const child = spawn(
   process.execPath,
-  [require.resolve('next/dist/bin/next'), 'start', '-p', port],
+  [require.resolve('next/dist/bin/next'), 'start', '-H', '0.0.0.0', '-p', port],
   { stdio: 'inherit' }
 );
 
