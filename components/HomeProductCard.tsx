@@ -31,7 +31,6 @@ export function HomeProductCard({
   const compareAt = selectedCompareAt(product, selectedVariant);
   const weight = selectedWeight(product, selectedVariant);
   const isUnavailable = Boolean(product.isComingSoon);
-  const needsWeightSelection = Boolean(product.disableBasePrice && !selectedVariant);
   const image =
     assetUrl(product.imageUrl || product.images?.[0]?.url) || fallback;
   const discount =
@@ -110,14 +109,13 @@ export function HomeProductCard({
           <span className={styles.weight}>{weight}</span>
         )}
 
-        {(variants.length > 1 || product.disableBasePrice) && (
+        {variants.length > 1 && (
           <select
             className={styles.variantSelect}
             value={variantId ?? ''}
-            onChange={(event) => setVariantId(event.target.value ? Number(event.target.value) : null)}
+            onChange={(event) => setVariantId(Number(event.target.value))}
             aria-label="Choisir le poids"
           >
-            {product.disableBasePrice && <option value="">Choisir un poids</option>}
             {variants.map((variant) => (
               <option key={variant.id} value={variant.id}>
                 {variant.label} - {money(variant.price)}
@@ -132,27 +130,27 @@ export function HomeProductCard({
         {/* buy row */}
         <div className={styles.buyRow}>
           <div className={styles.priceBlock}>
-            {compareAt && !needsWeightSelection && (
+            {compareAt && (
               <span className={styles.compareAt}>
                 {money(compareAt)}
               </span>
             )}
-            <strong className={styles.price}>{needsWeightSelection ? 'Choisir un poids' : money(price)}</strong>
+            <strong className={styles.price}>{money(price)}</strong>
           </div>
 
           <button
             type="button"
-            aria-label={isUnavailable ? 'Produit bientôt disponible' : needsWeightSelection ? 'Choisir un poids' : 'Ajouter au panier'}
+            aria-label={isUnavailable ? 'Produit bientôt disponible' : 'Ajouter au panier'}
             className={styles.cartBtn}
-            disabled={isUnavailable || needsWeightSelection}
+            disabled={isUnavailable}
             onClick={() => {
-              if (isUnavailable || needsWeightSelection) return;
+              if (isUnavailable) return;
               void addItem(product, 1, selectedVariant);
               toast.success('Produit ajouté au panier.');
             }}
           >
             <ShoppingCart size={14} />
-            <span>{isUnavailable ? 'Bientôt' : needsWeightSelection ? 'Poids' : 'Ajouter'}</span>
+            <span>{isUnavailable ? 'Bientôt' : 'Ajouter'}</span>
           </button>
         </div>
       </div>

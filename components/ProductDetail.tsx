@@ -31,8 +31,7 @@ export function ProductDetail({
   const weight = selectedWeight(product, selectedVariant);
   const stock = product.inventory?.stock ?? 0;
   const isComingSoon = Boolean(product.isComingSoon);
-  const needsWeightSelection = Boolean(product.disableBasePrice && !selectedVariant);
-  const canOrder = stock > 0 && !isComingSoon && !needsWeightSelection;
+  const canOrder = stock > 0 && !isComingSoon;
   const maxStock = 100;
   const stockPct = Math.min(100, Math.round((stock / maxStock) * 100));
   const isLowStock = stock > 0 && stock <= 10;
@@ -92,8 +91,8 @@ export function ProductDetail({
 
               {/* Price block */}
               <div className={styles.priceBlock}>
-                <span className={styles.price}>{needsWeightSelection ? 'Choisir un poids' : money(price)}</span>
-                {compareAt && !needsWeightSelection && (
+                <span className={styles.price}>{money(price)}</span>
+                {compareAt && (
                   <span className={styles.compareAt}>{money(compareAt)}</span>
                 )}
                 {discount && (
@@ -106,7 +105,7 @@ export function ProductDetail({
                 <p className={styles.description}>{product.description}</p>
               )}
 
-              {(variants.length > 1 || product.disableBasePrice) && (
+              {variants.length > 1 && (
                 <div className={styles.variantSection}>
                   <span className={styles.variantLabel}>Choisir le poids</span>
                   <div className={styles.variantGrid}>
@@ -136,7 +135,7 @@ export function ProductDetail({
                 <div className={styles.metaPill}>
                   <span className={styles.metaPillLabel}>Format</span>
                   <span className={styles.metaPillValue}>
-                    {needsWeightSelection ? 'À choisir' : weight || 'Selon produit'}
+                    {weight || 'Selon produit'}
                   </span>
                 </div>
                 <div
@@ -146,7 +145,7 @@ export function ProductDetail({
                 >
                   <span className={styles.metaPillLabel}>Disponibilité</span>
                   <span className={styles.metaPillValue}>
-                    {isComingSoon ? 'Sera disponible bientôt' : needsWeightSelection ? 'Choisissez un poids' : stock > 0 ? `En stock (${stock})` : 'Rupture de stock'}
+                    {isComingSoon ? 'Sera disponible bientôt' : stock > 0 ? `En stock (${stock})` : 'Rupture de stock'}
                   </span>
                 </div>
               </div>
@@ -191,7 +190,7 @@ export function ProductDetail({
                   }}
                 >
                   <ShoppingBag size={18} />
-                  {isComingSoon ? 'Disponible bientôt' : needsWeightSelection ? 'Choisir un poids' : 'Ajouter au panier'}
+                  {isComingSoon ? 'Disponible bientôt' : 'Ajouter au panier'}
                 </button>
                 <button
                   className={styles.wishlistBtn}

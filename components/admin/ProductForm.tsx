@@ -170,7 +170,6 @@ export function ProductForm({ product }: { product?: Product }) {
       isFeatured:       form.get('isFeatured') === 'on',
       isActive:         form.get('isActive') === 'on',
       isComingSoon:     form.get('isComingSoon') === 'on',
-      disableBasePrice: form.get('disableBasePrice') === 'on',
       variants:         variants.length ? variants : undefined,
     };
     setLoading(true);
@@ -558,20 +557,6 @@ export function ProductForm({ product }: { product?: Product }) {
             <span className={styles.checkboxText}>
               Sera disponible bientôt
               <small>Visible, mais impossible à ajouter au panier</small>
-            </span>
-          </label>
-
-          <label className={styles.checkboxLabel}>
-            <input
-              className={styles.checkbox}
-              name="disableBasePrice"
-              type="checkbox"
-              defaultChecked={product?.disableBasePrice}
-            />
-            <span className={styles.checkboxBox} />
-            <span className={styles.checkboxText}>
-              Désactiver le prix de base
-              <small>Le client doit choisir un poids avant de commander</small>
             </span>
           </label>
         </div>
