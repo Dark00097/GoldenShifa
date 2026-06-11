@@ -184,6 +184,21 @@ export default async function HomePage() {
         <div className={`container-page ${styles.heroInner}`}>
           <div className={styles.heroCopy}>
             <p className={styles.kicker}>L'or de la nature,</p>
+            <div className={styles.algeriaBadge} aria-label="Algerie">
+              <span className={styles.algeriaFlag} aria-hidden="true">
+                <svg viewBox="0 0 54 36" focusable="false">
+                  <rect width="54" height="36" rx="4" fill="#f8f8f2" />
+                  <path d="M0 0h27v36H0z" fill="#006233" />
+                  <circle cx="28" cy="18" r="10.5" fill="#d21034" />
+                  <circle cx="31.5" cy="18" r="8.5" fill="#f8f8f2" />
+                  <path
+                    d="M38.5 10.5l1.8 5.5h5.8l-4.7 3.4 1.8 5.6-4.7-3.5-4.7 3.5 1.8-5.6-4.7-3.4h5.8z"
+                    fill="#d21034"
+                  />
+                </svg>
+              </span>
+              <span>Algerie</span>
+            </div>
             <h1>
               La pureté
               <br />

@@ -55,6 +55,83 @@
   text-transform: uppercase;
 }
 
+.algeriaBadge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  margin: -6px 0 22px;
+  padding: 7px 16px 7px 8px;
+  border: 1px solid rgba(217, 154, 32, 0.36);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    rgba(7, 6, 4, 0.68);
+  color: #fff7e5;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  animation: algeriaBadgeFloat 5.8s ease-in-out infinite;
+}
+
+.algeriaBadge::before {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(0, 98, 51, 0.24), transparent 48%, rgba(210, 16, 52, 0.2));
+  content: "";
+}
+
+.algeriaFlag {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 48px;
+  height: 32px;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.32),
+    0 8px 18px rgba(0, 0, 0, 0.28);
+  transform: skewX(-4deg);
+}
+
+.algeriaFlag svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: skewX(4deg) scale(1.03);
+}
+
+.algeriaBadge span:last-child {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes algeriaBadgeFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .algeriaBadge {
+    animation: none;
+  }
+}
+
 .heroCopy h1 {
   margin: 0;
   color: #fffaf1;
@@ -661,6 +738,20 @@
 }
 
 @media (max-width: 760px) {
+  .algeriaBadge {
+    min-height: 38px;
+    margin: -4px 0 18px;
+    padding: 6px 13px 6px 7px;
+    gap: 8px;
+    font-size: 11px;
+  }
+
+  .algeriaFlag {
+    width: 42px;
+    height: 28px;
+    border-radius: 7px;
+  }
+
   .hero::after {
     background:
       linear-gradient(180deg, transparent 0%, transparent 40%, rgba(0, 0, 0, 0.96) 49%, #050402 62%, #050402 100%);
