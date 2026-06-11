@@ -19,6 +19,7 @@ async function addColumnIfMissing(tableName: string, columnName: string, definit
 
 export async function ensureSchema() {
   await addColumnIfMissing('Product', 'isComingSoon', 'isComingSoon TINYINT(1) NOT NULL DEFAULT 0 AFTER isActive');
+  await addColumnIfMissing('Product', 'disableBasePrice', 'disableBasePrice TINYINT(1) NOT NULL DEFAULT 0 AFTER isComingSoon');
   await addColumnIfMissing('OrderItem', 'productVariantId', 'productVariantId INT NULL AFTER productId');
   await addColumnIfMissing('OrderItem', 'variantLabel', 'variantLabel VARCHAR(80) NULL AFTER name');
 

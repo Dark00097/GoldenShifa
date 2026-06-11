@@ -77,7 +77,9 @@ checkoutRouter.post('/', async (req, res, next) => {
       const productVariants = variants.filter((entry) => entry.productId === item.productId);
       const variant = item.variantId
         ? productVariants.find((entry) => entry.id === item.variantId)
-        : productVariants.find((entry) => bool(entry.isDefault)) || productVariants[0] || null;
+        : bool(product.disableBasePrice)
+          ? null
+          : productVariants.find((entry) => bool(entry.isDefault)) || productVariants[0] || null;
       const currentStock = Number(product.inventory_stock ?? 0);
 
       if (bool(product.isComingSoon)) {
@@ -86,6 +88,10 @@ checkoutRouter.post('/', async (req, res, next) => {
 
       if (item.variantId && !variant) {
         return res.status(400).json({ message: `Format indisponible pour ${product.name}.` });
+      }
+
+      if (bool(product.disableBasePrice) && !variant) {
+        return res.status(400).json({ message: `Veuillez choisir un poids pour ${product.name}.` });
       }
 
       if (currentStock < item.quantity) {

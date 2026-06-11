@@ -5,7 +5,7 @@ type Executor = Parameters<typeof rows>[2];
 function productSelect() {
   return `
     p.id, p.name, p.slug, p.shortDescription, p.description, p.price, p.compareAt, p.imageUrl,
-    p.origin, p.weight, p.isFeatured, p.isActive, p.isComingSoon, p.categoryId, p.createdAt, p.updatedAt,
+    p.origin, p.weight, p.isFeatured, p.isActive, p.isComingSoon, p.disableBasePrice, p.categoryId, p.createdAt, p.updatedAt,
     c.id AS category_id, c.name AS category_name, c.slug AS category_slug, c.description AS category_description,
     c.imageUrl AS category_imageUrl, c.isActive AS category_isActive,
     i.id AS inventory_id, i.sku AS inventory_sku, i.stock AS inventory_stock, i.lowStockAt AS inventory_lowStockAt
@@ -27,6 +27,7 @@ export function serializeProduct(data: any, images: any[] = [], variants: any[] 
     isFeatured: bool(data.isFeatured),
     isActive: bool(data.isActive),
     isComingSoon: bool(data.isComingSoon),
+    disableBasePrice: bool(data.disableBasePrice),
     categoryId: data.categoryId,
     category: data.category_id
       ? {

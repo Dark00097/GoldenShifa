@@ -53,6 +53,7 @@ const productSchema = z.object({
   isFeatured: z.coerce.boolean().optional(),
   isActive: z.coerce.boolean().optional(),
   isComingSoon: z.coerce.boolean().optional(),
+  disableBasePrice: z.coerce.boolean().optional(),
   sku: z.string().optional(),
   stock: z.coerce.number().int().nonnegative().optional(),
   lowStockAt: z.coerce.number().int().nonnegative().optional(),
@@ -209,8 +210,8 @@ adminProductsRouter.post('/', async (req, res, next) => {
       const result = await exec(
         `
           INSERT INTO Product
-            (name, slug, shortDescription, description, price, compareAt, imageUrl, origin, weight, isFeatured, isActive, isComingSoon, categoryId, createdAt, updatedAt)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP(3), CURRENT_TIMESTAMP(3))
+            (name, slug, shortDescription, description, price, compareAt, imageUrl, origin, weight, isFeatured, isActive, isComingSoon, disableBasePrice, categoryId, createdAt, updatedAt)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP(3), CURRENT_TIMESTAMP(3))
         `,
         [
           productData.name,
@@ -225,6 +226,7 @@ adminProductsRouter.post('/', async (req, res, next) => {
           productData.isFeatured ?? false,
           productData.isActive ?? true,
           productData.isComingSoon ?? false,
+          productData.disableBasePrice ?? false,
           productData.categoryId
         ],
         tx
@@ -269,7 +271,7 @@ adminProductsRouter.put('/:id', async (req, res, next) => {
       const productFields: string[] = [];
       const productValues: unknown[] = [];
 
-      for (const key of ['name', 'shortDescription', 'description', 'price', 'compareAt', 'imageUrl', 'origin', 'weight', 'isFeatured', 'isActive', 'isComingSoon', 'categoryId'] as const) {
+      for (const key of ['name', 'shortDescription', 'description', 'price', 'compareAt', 'imageUrl', 'origin', 'weight', 'isFeatured', 'isActive', 'isComingSoon', 'disableBasePrice', 'categoryId'] as const) {
         if (productData[key] !== undefined) {
           productFields.push(`${key} = ?`);
           productValues.push(productData[key]);
