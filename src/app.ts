@@ -18,8 +18,7 @@ import { errorHandler, notFound } from './middleware/error';
 
 export const app = express();
 
-const allowedOrigins = (env.CORS_ORIGINS || env.CLIENT_URL)
-  .split(',')
+const allowedOrigins = [env.CLIENT_URL, ...(env.CORS_ORIGINS || '').split(',')]
   .map((origin) => origin.trim())
   .filter(Boolean);
 const allowedOriginSet = new Set(allowedOrigins);
