@@ -19,10 +19,7 @@ const links = [
   { href: '/', label: 'Accueil' },
   { href: '/produits', label: 'Produits', dropdown: true },
   { href: '/categories', label: 'Catégories' },
-  { href: '/#histoire', label: 'À propos' },
-  { href: '/#engagements', label: 'Nos engagements' },
-  { href: '/#selection', label: 'Blog' },
-  { href: '/#contact', label: 'Contact' }
+  { href: '/#histoire', label: 'Notre histoire' }
 ];
 
 export function Header() {
