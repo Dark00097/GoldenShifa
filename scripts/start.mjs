@@ -1,20 +1,11 @@
-import { createRequire } from 'module';
-import { spawn } from 'child_process';
+import { startServer } from 'next/dist/server/lib/start-server.js';
 
-const require = createRequire(import.meta.url);
 const port = process.env.PORT || process.env.NEXT_PORT || '3001';
+const hostname = process.env.HOSTNAME || '0.0.0.0';
 
-const child = spawn(
-  process.execPath,
-  [require.resolve('next/dist/bin/next'), 'start', '-p', port],
-  { stdio: 'inherit' }
-);
-
-child.on('exit', (code, signal) => {
-  if (signal) {
-    process.kill(process.pid, signal);
-    return;
-  }
-
-  process.exit(code ?? 0);
+await startServer({
+  dir: process.cwd(),
+  port: Number(port),
+  hostname,
+  isDev: false
 });
