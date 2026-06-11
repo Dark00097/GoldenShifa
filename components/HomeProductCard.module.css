@@ -215,10 +215,10 @@
 /* ─── Buy row ────────────────────────────────────────────────── */
 .buyRow {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 14px;
-  margin-top: 2px;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: 10px;
+  margin-top: 4px;
 }
 
 .priceBlock {
@@ -249,6 +249,8 @@
 .cartBtn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  justify-self: start;
   gap: 6px;
   height: 36px;
   padding: 0 14px;
@@ -344,14 +346,7 @@
     font-size: 15px;
   }
 
-  .buyRow {
-    grid-template-columns: 1fr;
-    align-items: stretch;
-    gap: 10px;
-  }
-
   .cartBtn {
-    justify-content: center;
     width: 100%;
   }
 }
