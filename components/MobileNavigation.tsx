@@ -10,7 +10,7 @@ const links = [
   { href: '/', label: 'Accueil' },
   { href: '/produits', label: 'Produits' },
   { href: '/categories', label: 'Catégories' },
-  { href: '/#histoire', label: 'Notre histoire' }
+  { href: '/notre-histoire', label: 'Notre histoire' }
 ];
 
 export function MobileNavigation({ open, onClose }: { open: boolean; onClose: () => void }) {

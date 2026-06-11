@@ -31,7 +31,7 @@ export function Footer() {
             <Link href="/">Accueil</Link>
             <Link href="/produits">Produits</Link>
             <Link href="/categories">Catégories</Link>
-            <Link href="/#histoire">À propos</Link>
+            <Link href="/notre-histoire">Notre histoire</Link>
             <Link href="/#selection">Blog</Link>
             <Link href="/#contact">Contact</Link>
           </div>

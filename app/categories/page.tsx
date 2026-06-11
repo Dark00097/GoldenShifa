@@ -175,7 +175,7 @@ export default async function CategoriesPage() {
               Voir tous les produits
               <ArrowRight size={16} />
             </a>
-            <a href="/#histoire" className={styles.ctaBtnOutline}>
+            <a href="/notre-histoire" className={styles.ctaBtnOutline}>
               Notre histoire
               <ArrowRight size={14} />
             </a>

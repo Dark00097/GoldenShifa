@@ -19,7 +19,7 @@ const links = [
   { href: '/', label: 'Accueil' },
   { href: '/produits', label: 'Produits', dropdown: true },
   { href: '/categories', label: 'Catégories' },
-  { href: '/#histoire', label: 'Notre histoire' }
+  { href: '/notre-histoire', label: 'Notre histoire' }
 ];
 
 export function Header() {
@@ -29,7 +29,6 @@ export function Header() {
 
   function active(href: string) {
     if (href === '/') return pathname === '/';
-    if (href.includes('#')) return false;
     return pathname.startsWith(href);
   }
 

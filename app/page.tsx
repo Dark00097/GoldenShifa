@@ -214,8 +214,8 @@ export default async function HomePage() {
                 Découvrir nos miels
                 <ArrowRight size={16} />
               </Link>
-              <Link href="/#histoire" className={styles.videoButton}>
-                Voir la vidéo
+              <Link href="/notre-histoire" className={styles.videoButton}>
+                Notre histoire
                 <PlayCircle size={18} />
               </Link>
             </div>
@@ -241,7 +241,7 @@ export default async function HomePage() {
               { icon: Leaf, title: '100% Naturel', text: 'Sans additifs ni conservateurs' },
               { icon: Flower2, title: 'Récolté avec soin', text: 'Respect des abeilles' },
               { icon: Award, title: 'Qualité Premium', text: 'Miel cru et non pasteurisé' },
-              { icon: Truck, title: 'Livraison Rapide', text: 'Partout en Tunisie' }
+              { icon: Truck, title: 'Livraison Rapide', text: 'Partout en France' }
             ].map(({ icon: Icon, title, text }) => (
               <div className={styles.promiseItem} key={title}>
                 <Icon size={32} />
@@ -299,11 +299,11 @@ export default async function HomePage() {
         <div className={`container-page ${styles.storyInner}`}>
           <div className={styles.storyCopy}>
             <p>Notre histoire</p>
-            <h2>Une histoire de passion et de tradition</h2>
+            <h2>L'héritage des terres de Laghouat</h2>
             <span>
-              Chez GoldenShifa, nous perpétuons un savoir-faire ancestral en harmonie avec la nature et les abeilles.
+              Golden Shifa est né d'une histoire familiale à Laghouat, au cœur du désert algérien, autour d'un miel rare récolté avec patience et respect.
             </span>
-            <Link href="/#histoire" className={styles.storyButton}>
+            <Link href="/notre-histoire" className={styles.storyButton}>
               Découvrir notre histoire
               <ArrowRight size={17} />
             </Link>
@@ -319,7 +319,7 @@ export default async function HomePage() {
             {[
               ['+5 Ans', "D'expertise"],
               ['+5000', 'Clients satisfaits'],
-              ['+20', 'Récoltes par an'],
+              ['1', 'Récolte par an'],
               ['100%', 'Naturel & pur']
             ].map(([value, label]) => (
               <div key={value}>
