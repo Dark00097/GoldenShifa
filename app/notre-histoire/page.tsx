@@ -114,8 +114,8 @@ export default function NotreHistoirePage() {
           <div className={styles.originMedia}>
             <div className={styles.originPhotoWrap}>
               <Image
-                src="https://binette-et-jardin.ouest-france.fr/images/dossiers/historique/ziziphus-jujuba-161901.jpg"
-                alt="Jujubier sauvage de Laghouat"
+                src="https://images.unsplash.com/photo-1587049352851-8d4e89133924?auto=format&fit=crop&w=900&q=85"
+                alt="Miel naturel de jujubier Golden Shifa"
                 fill
                 className={styles.originPhoto}
                 sizes="(max-width: 980px) 100vw, 520px"
@@ -205,8 +205,8 @@ export default function NotreHistoirePage() {
               </div>
               <div className={styles.landPhotoSecondary}>
                 <Image
-                  src="https://images.unsplash.com/photo-1578922794704-7bdd46f70ce0?auto=format&fit=crop&w=600&q=85"
-                  alt="Abeilles et fleurs de jujubier"
+                  src="https://images.unsplash.com/photo-1577048982768-5cb3e7ddfa24?auto=format&fit=crop&w=600&q=85"
+                  alt="Rayon de miel naturel"
                   fill
                   className={styles.landPhoto}
                   sizes="240px"
