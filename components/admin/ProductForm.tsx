@@ -311,7 +311,7 @@ export function ProductForm({ product }: { product?: Product }) {
           <div className={styles.variantHeader}>
             <div>
               <label className={styles.label}>Poids & prix par format</label>
-              <p className={styles.hint}>Ex : 250g, 500g, 1kg. Le format par dÃ©faut alimente le prix affichÃ©.</p>
+              <p className={styles.hint}>Ex : 250g, 500g, 1kg. Le format par défaut alimente le prix affiché.</p>
             </div>
             <button type="button" className={styles.addVariantBtn} onClick={addVariant}>
               <Plus size={14} />
@@ -329,7 +329,7 @@ export function ProductForm({ product }: { product?: Product }) {
                     checked={variant.isDefault}
                     onChange={() => updateVariant(index, { isDefault: true })}
                   />
-                  DÃ©faut
+                  Défaut
                 </label>
                 <input
                   className={styles.input}
@@ -351,7 +351,7 @@ export function ProductForm({ product }: { product?: Product }) {
                   type="number"
                   step="0.01"
                   onChange={(event) => updateVariant(index, { compareAt: event.target.value })}
-                  placeholder="Prix barrÃ©"
+                  placeholder="Prix barré"
                 />
                 <button
                   type="button"
@@ -555,8 +555,8 @@ export function ProductForm({ product }: { product?: Product }) {
             />
             <span className={styles.checkboxBox} />
             <span className={styles.checkboxText}>
-              Sera disponible bientÃ´t
-              <small>Visible, mais impossible Ã  ajouter au panier</small>
+              Sera disponible bientôt
+              <small>Visible, mais impossible à ajouter au panier</small>
             </span>
           </label>
         </div>
