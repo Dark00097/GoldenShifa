@@ -114,7 +114,7 @@ export default function NotreHistoirePage() {
           <div className={styles.originMedia}>
             <div className={styles.originPhotoWrap}>
               <Image
-                src="https://images.unsplash.com/photo-1577048982768-5cb3e7ddfa24?auto=format&fit=crop&w=900&q=85"
+                src="https://binette-et-jardin.ouest-france.fr/images/dossiers/historique/ziziphus-jujuba-161901.jpg"
                 alt="Jujubier sauvage de Laghouat"
                 fill
                 className={styles.originPhoto}
