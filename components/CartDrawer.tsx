@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { ArrowRight, Leaf, ShoppingBag, Trash2, X } from 'lucide-react';
 import { assetUrl, money } from '@/lib/api';
 import { useCart } from '@/lib/cart';
-import { cartItemKey, cartItemUnitPrice, cartItemWeight } from '@/lib/product';
 import { QuantitySelector } from './QuantitySelector';
 import styles from './CartDrawer.module.css';
 
@@ -76,10 +75,8 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
             </div>
           ) : (
             <div className={styles.itemList}>
-              {items.map((item) => {
-                const key = cartItemKey(item);
-                return (
-                <div key={key} className={styles.itemCard}>
+              {items.map((item) => (
+                <div key={item.product.id} className={styles.itemCard}>
                   {/* Image */}
                   <div className={styles.itemImageWrap}>
                     <Image
@@ -101,13 +98,13 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
                           </span>
                         )}
                         <h3 className={styles.itemName}>{item.product.name}</h3>
-                        {cartItemWeight(item) && (
-                          <span className={styles.itemWeight}>{cartItemWeight(item)}</span>
+                        {item.product.weight && (
+                          <span className={styles.itemWeight}>{item.product.weight}</span>
                         )}
                       </div>
                       <button
                         className={styles.removeBtn}
-                        onClick={() => removeItem(key)}
+                        onClick={() => removeItem(item.product.id)}
                         aria-label={`Retirer ${item.product.name}`}
                       >
                         <Trash2 size={14} />
@@ -117,17 +114,18 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
                     <div className={styles.itemBottom}>
                       <QuantitySelector
                         value={item.quantity}
-                        onChange={(value) => updateQuantity(key, value)}
+                        onChange={(value) => updateQuantity(item.product.id, value)}
                         compact
                       />
                       <span className={styles.itemPrice}>
-                        {money((cartItemUnitPrice(item) * item.quantity).toFixed(2))}
+                        {money(
+                          (parseFloat(item.product.price) * item.quantity).toFixed(2)
+                        )}
                       </span>
                     </div>
                   </div>
                 </div>
-              );
-              })}
+              ))}
             </div>
           )}
         </div>

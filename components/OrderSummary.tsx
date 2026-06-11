@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import { Package, ShoppingBag, Tag, Truck } from 'lucide-react';
 import { assetUrl, money } from '@/lib/api';
-import { cartItemKey, cartItemUnitPrice, cartItemWeight } from '@/lib/product';
 import { CartItem } from '@/types';
 import styles from './OrderSummary.module.css';
 
@@ -35,7 +34,7 @@ export function OrderSummary({
 
       <div className={styles.items}>
         {items.map((item) => (
-          <div key={cartItemKey(item)} className={styles.item}>
+          <div key={item.product.id} className={styles.item}>
             <div className={styles.itemLeft}>
               <div className={styles.itemImageWrap}>
                 <Image
@@ -47,13 +46,10 @@ export function OrderSummary({
                 />
                 <span className={styles.itemQty}>{item.quantity}x</span>
               </div>
-              <span className={styles.itemName}>
-                {item.product.name}
-                {cartItemWeight(item) && <small className={styles.itemMeta}>{cartItemWeight(item)}</small>}
-              </span>
+              <span className={styles.itemName}>{item.product.name}</span>
             </div>
             <strong className={styles.itemPrice}>
-              {money(cartItemUnitPrice(item) * item.quantity)}
+              {money(Number(item.product.price) * item.quantity)}
             </strong>
           </div>
         ))}

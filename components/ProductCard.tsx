@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { ShoppingCart } from 'lucide-react';
 import { assetUrl, money } from '@/lib/api';
 import { useCart } from '@/lib/cart';
-import { defaultVariant, selectedCompareAt, selectedPrice, selectedWeight } from '@/lib/product';
 import { useToast } from '@/lib/toast';
 import { Product } from '@/types';
 
@@ -16,11 +15,6 @@ export function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
   const toast = useToast();
   const image = assetUrl(product.imageUrl || product.images?.[0]?.url) || fallback;
-  const variant = defaultVariant(product);
-  const price = selectedPrice(product, variant);
-  const compareAt = selectedCompareAt(product, variant);
-  const weight = selectedWeight(product, variant);
-  const isUnavailable = Boolean(product.isComingSoon);
 
   return (
     <article className="surface overflow-hidden">
@@ -35,24 +29,20 @@ export function ProductCard({ product }: { product: Product }) {
           <Link href={`/produits/${product.slug}`} className="mt-1 block font-display text-xl font-bold text-deepHoney">
             {product.name}
           </Link>
-          {weight && <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-stone-500">{weight}</p>}
-          {isUnavailable && <p className="mt-1 text-xs font-bold uppercase tracking-wide text-deepHoney">Produit sera disponible bientôt</p>}
         </div>
         <p className="line-clamp-2 text-sm text-stone-600">{product.shortDescription || product.description}</p>
         <div className="flex items-center justify-between gap-3">
           <div>
-            <span className="font-bold text-ink">{money(price)}</span>
-            {compareAt && <span className="ml-2 text-sm text-stone-400 line-through">{money(compareAt)}</span>}
+            <span className="font-bold text-ink">{money(product.price)}</span>
+            {product.compareAt && <span className="ml-2 text-sm text-stone-400 line-through">{money(product.compareAt)}</span>}
           </div>
           <button
             className="btn-primary px-3"
-            disabled={isUnavailable}
             onClick={() => {
-              if (isUnavailable) return;
-              void addItem(product, 1, variant);
+              void addItem(product);
               toast.success('Produit ajouté au panier.');
             }}
-            aria-label={isUnavailable ? 'Produit bientôt disponible' : 'Ajouter au panier'}
+            aria-label="Ajouter au panier"
           >
             <ShoppingCart size={16} />
           </button>

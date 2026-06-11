@@ -4,10 +4,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ShoppingCart, Star, Leaf, Flame } from 'lucide-react';
-import { useMemo, useState } from 'react';
 import { assetUrl, money } from '@/lib/api';
 import { useCart } from '@/lib/cart';
-import { activeVariants, defaultVariant, selectedCompareAt, selectedPrice, selectedWeight } from '@/lib/product';
 import { useToast } from '@/lib/toast';
 import { Product } from '@/types';
 import styles from './HomeProductCard.module.css';
@@ -24,19 +22,12 @@ export function HomeProductCard({
 }) {
   const { addItem } = useCart();
   const toast = useToast();
-  const variants = useMemo(() => activeVariants(product), [product]);
-  const [variantId, setVariantId] = useState<number | null>(defaultVariant(product)?.id ?? null);
-  const selectedVariant = variants.find((variant) => variant.id === variantId) || defaultVariant(product);
-  const price = selectedPrice(product, selectedVariant);
-  const compareAt = selectedCompareAt(product, selectedVariant);
-  const weight = selectedWeight(product, selectedVariant);
-  const isUnavailable = Boolean(product.isComingSoon);
   const image =
     assetUrl(product.imageUrl || product.images?.[0]?.url) || fallback;
   const discount =
-    compareAt && Number(compareAt) > Number(price)
+    product.compareAt && Number(product.compareAt) > Number(product.price)
       ? Math.round(
-          (1 - Number(price) / Number(compareAt)) * 100
+          (1 - Number(product.price) / Number(product.compareAt)) * 100
         )
       : null;
 
@@ -62,9 +53,7 @@ export function HomeProductCard({
 
       {/* ── Top badges ── */}
       <div className={styles.topRow}>
-        {isUnavailable ? (
-          <span className={styles.badgeSoon}>Bientôt</span>
-        ) : discount ? (
+        {discount ? (
           <span className={styles.badgeDiscount}>-{discount}%</span>
         ) : product.isFeatured ? (
           <span className={styles.badgeNew}>
@@ -100,28 +89,9 @@ export function HomeProductCard({
           {product.name}
         </Link>
 
-        {isUnavailable && (
-          <span className={styles.soonText}>Produit sera disponible bientôt</span>
-        )}
-
         {/* weight tag */}
-        {weight && (
-          <span className={styles.weight}>{weight}</span>
-        )}
-
-        {variants.length > 1 && (
-          <select
-            className={styles.variantSelect}
-            value={variantId ?? ''}
-            onChange={(event) => setVariantId(Number(event.target.value))}
-            aria-label="Choisir le poids"
-          >
-            {variants.map((variant) => (
-              <option key={variant.id} value={variant.id}>
-                {variant.label} - {money(variant.price)}
-              </option>
-            ))}
-          </select>
+        {product.weight && (
+          <span className={styles.weight}>{product.weight}</span>
         )}
 
         {/* divider */}
@@ -130,27 +100,25 @@ export function HomeProductCard({
         {/* buy row */}
         <div className={styles.buyRow}>
           <div className={styles.priceBlock}>
-            {compareAt && (
+            {product.compareAt && (
               <span className={styles.compareAt}>
-                {money(compareAt)}
+                {money(product.compareAt)}
               </span>
             )}
-            <strong className={styles.price}>{money(price)}</strong>
+            <strong className={styles.price}>{money(product.price)}</strong>
           </div>
 
           <button
             type="button"
-            aria-label={isUnavailable ? 'Produit bientôt disponible' : 'Ajouter au panier'}
+            aria-label="Ajouter au panier"
             className={styles.cartBtn}
-            disabled={isUnavailable}
             onClick={() => {
-              if (isUnavailable) return;
-              void addItem(product, 1, selectedVariant);
+              void addItem(product);
               toast.success('Produit ajouté au panier.');
             }}
           >
             <ShoppingCart size={14} />
-            <span>{isUnavailable ? 'Bientôt' : 'Ajouter'}</span>
+            <span>Ajouter</span>
           </button>
         </div>
       </div>

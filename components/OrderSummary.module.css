@@ -133,9 +133,6 @@
 }
 
 .itemName {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
   color: rgba(255, 247, 229, 0.72);
   font-size: 13px;
   font-weight: 600;
@@ -146,12 +143,6 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-.itemMeta {
-  color: rgba(226, 164, 42, 0.72);
-  font-size: 11px;
-  font-weight: 800;
 }
 
 .itemPrice {

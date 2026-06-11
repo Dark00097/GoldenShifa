@@ -9,7 +9,6 @@ import { OrderSummary } from '@/components/OrderSummary';
 import { QuantitySelector } from '@/components/QuantitySelector';
 import { assetUrl, money } from '@/lib/api';
 import { useCart } from '@/lib/cart';
-import { cartItemKey, cartItemUnitPrice, cartItemWeight } from '@/lib/product';
 
 const fallback =
   'https://images.unsplash.com/photo-1587049352851-8d4e89133924?auto=format&fit=crop&w=600&q=80';
@@ -27,29 +26,23 @@ export default function CartPage() {
       ) : (
         <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
           <div className="grid gap-4">
-            {items.map((item) => {
-              const key = cartItemKey(item);
-              return (
-              <div key={key} className="surface grid gap-4 p-4 sm:grid-cols-[120px_1fr_auto]">
+            {items.map((item) => (
+              <div key={item.product.id} className="surface grid gap-4 p-4 sm:grid-cols-[120px_1fr_auto]">
                 <div className="relative aspect-square overflow-hidden rounded-md bg-cream">
                   <Image src={assetUrl(item.product.imageUrl || item.product.images?.[0]?.url) || fallback} alt={item.product.name} fill className="object-cover" />
                 </div>
                 <div>
                   <h2 className="font-display text-xl font-bold text-deepHoney">{item.product.name}</h2>
-                  <p className="mt-1 text-sm text-stone-600">
-                    {cartItemWeight(item) ? `${cartItemWeight(item)} · ` : ''}
-                    {money(cartItemUnitPrice(item))}
-                  </p>
+                  <p className="mt-1 text-sm text-stone-600">{money(item.product.price)}</p>
                   <div className="mt-4">
-                    <QuantitySelector value={item.quantity} onChange={(value) => updateQuantity(key, value)} />
+                    <QuantitySelector value={item.quantity} onChange={(value) => updateQuantity(item.product.id, value)} />
                   </div>
                 </div>
-                <button className="btn-secondary h-10 px-3 text-red-700" onClick={() => removeItem(key)} aria-label="Supprimer">
+                <button className="btn-secondary h-10 px-3 text-red-700" onClick={() => removeItem(item.product.id)} aria-label="Supprimer">
                   <Trash2 size={16} />
                 </button>
               </div>
-            );
-            })}
+            ))}
             <div className="surface p-5">
               <CouponInput />
             </div>
