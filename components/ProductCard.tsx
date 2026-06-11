@@ -21,6 +21,7 @@ export function ProductCard({ product }: { product: Product }) {
   const compareAt = selectedCompareAt(product, variant);
   const weight = selectedWeight(product, variant);
   const isUnavailable = Boolean(product.isComingSoon);
+  const needsWeightSelection = Boolean(product.disableBasePrice && !variant);
 
   return (
     <article className="surface overflow-hidden">
@@ -41,18 +42,18 @@ export function ProductCard({ product }: { product: Product }) {
         <p className="line-clamp-2 text-sm text-stone-600">{product.shortDescription || product.description}</p>
         <div className="flex items-center justify-between gap-3">
           <div>
-            <span className="font-bold text-ink">{money(price)}</span>
-            {compareAt && <span className="ml-2 text-sm text-stone-400 line-through">{money(compareAt)}</span>}
+            <span className="font-bold text-ink">{needsWeightSelection ? 'Choisir un poids' : money(price)}</span>
+            {compareAt && !needsWeightSelection && <span className="ml-2 text-sm text-stone-400 line-through">{money(compareAt)}</span>}
           </div>
           <button
             className="btn-primary px-3"
-            disabled={isUnavailable}
+            disabled={isUnavailable || needsWeightSelection}
             onClick={() => {
-              if (isUnavailable) return;
+              if (isUnavailable || needsWeightSelection) return;
               void addItem(product, 1, variant);
               toast.success('Produit ajouté au panier.');
             }}
-            aria-label={isUnavailable ? 'Produit bientôt disponible' : 'Ajouter au panier'}
+            aria-label={isUnavailable ? 'Produit bientôt disponible' : needsWeightSelection ? 'Choisir un poids' : 'Ajouter au panier'}
           >
             <ShoppingCart size={16} />
           </button>

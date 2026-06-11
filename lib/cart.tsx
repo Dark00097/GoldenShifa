@@ -82,6 +82,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       addItem(product, quantity = 1, variant) {
         if (product.isComingSoon) return;
         const selectedVariant = variant === undefined ? defaultVariant(product) : variant;
+        if (product.disableBasePrice && !selectedVariant) return;
         const key = cartKey(product.id, selectedVariant?.id ?? null);
         setItems((current) => {
           const existing = current.find((item) => cartItemKey(item) === key);

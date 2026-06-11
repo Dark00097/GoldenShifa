@@ -5,6 +5,7 @@ export function activeVariants(product: Product) {
 }
 
 export function defaultVariant(product: Product) {
+  if (product.disableBasePrice) return null;
   const variants = activeVariants(product);
   return variants.find((variant) => variant.isDefault) || variants[0] || null;
 }

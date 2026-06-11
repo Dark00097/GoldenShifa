@@ -46,6 +46,7 @@ export type Product = {
   isFeatured: boolean;
   isActive: boolean;
   isComingSoon?: boolean;
+  disableBasePrice?: boolean;
   category: Category;
   categoryId: number;
   variants?: ProductVariant[];
