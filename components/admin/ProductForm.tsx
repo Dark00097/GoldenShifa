@@ -10,6 +10,7 @@ import {
   Info,
   Layers,
   Package,
+  Plus,
   Save,
   Tag,
   Trash2,
@@ -19,6 +20,35 @@ import { apiFetch, assetUrl } from '@/lib/api';
 import { useToast } from '@/lib/toast';
 import { Category, Product } from '@/types';
 import styles from './ProductForm.module.css';
+
+type DraftVariant = {
+  id?: number;
+  label: string;
+  price: string;
+  compareAt: string;
+  isDefault: boolean;
+};
+
+function initialVariantRows(product?: Product): DraftVariant[] {
+  if (product?.variants?.length) {
+    return product.variants.map((variant) => ({
+      id: variant.id,
+      label: variant.label,
+      price: variant.price,
+      compareAt: variant.compareAt || '',
+      isDefault: variant.isDefault
+    }));
+  }
+
+  return [
+    {
+      label: product?.weight || '',
+      price: product?.price || '',
+      compareAt: product?.compareAt || '',
+      isDefault: true
+    }
+  ];
+}
 
 export function ProductForm({ product }: { product?: Product }) {
   const router = useRouter();
@@ -31,6 +61,7 @@ export function ProductForm({ product }: { product?: Product }) {
   const [galleryFiles,   setGalleryFiles]   = useState<FileList | null>(null);
   const [loading,        setLoading]        = useState(false);
   const [imageActionId,  setImageActionId]  = useState<number | null>(null);
+  const [variantRows,    setVariantRows]    = useState<DraftVariant[]>(() => initialVariantRows(product));
 
   const galleryImages = useMemo(() => {
     const main = galleryProduct?.imageUrl || '';
@@ -49,7 +80,31 @@ export function ProductForm({ product }: { product?: Product }) {
   useEffect(() => {
     setGalleryProduct(product);
     setCategoryId(product?.categoryId ? String(product.categoryId) : '');
+    setVariantRows(initialVariantRows(product));
   }, [product]);
+
+  function updateVariant(index: number, patch: Partial<DraftVariant>) {
+    setVariantRows((current) =>
+      current.map((variant, i) => {
+        if (i !== index) return variant;
+        const next = { ...variant, ...patch };
+        return patch.isDefault ? { ...next, isDefault: true } : next;
+      }).map((variant, i) => (patch.isDefault && i !== index ? { ...variant, isDefault: false } : variant))
+    );
+  }
+
+  function addVariant() {
+    setVariantRows((current) => [...current, { label: '', price: '', compareAt: '', isDefault: current.length === 0 }]);
+  }
+
+  function removeVariant(index: number) {
+    setVariantRows((current) => {
+      const next = current.filter((_, i) => i !== index);
+      if (!next.length) return [{ label: '', price: '', compareAt: '', isDefault: true }];
+      if (!next.some((variant) => variant.isDefault)) next[0].isDefault = true;
+      return next;
+    });
+  }
 
   async function uploadMainImage(productId: number) {
     if (!mainImageFile) return;
@@ -90,6 +145,16 @@ export function ProductForm({ product }: { product?: Product }) {
       return;
     }
     const form    = new FormData(e.currentTarget);
+    const variants = variantRows
+      .map((variant, index) => ({
+        id: variant.id,
+        label: variant.label.trim(),
+        price: variant.price,
+        compareAt: variant.compareAt || null,
+        isDefault: variant.isDefault,
+        sortOrder: index
+      }))
+      .filter((variant) => variant.label && variant.price);
     const payload = {
       name:             form.get('name'),
       shortDescription: form.get('shortDescription') || null,
@@ -104,6 +169,8 @@ export function ProductForm({ product }: { product?: Product }) {
       lowStockAt:       form.get('lowStockAt') || 5,
       isFeatured:       form.get('isFeatured') === 'on',
       isActive:         form.get('isActive') === 'on',
+      isComingSoon:     form.get('isComingSoon') === 'on',
+      variants:         variants.length ? variants : undefined,
     };
     setLoading(true);
     try {
@@ -237,6 +304,65 @@ export function ProductForm({ product }: { product?: Product }) {
               type="number"
               defaultValue={product?.inventory?.lowStockAt ?? 5}
             />
+          </div>
+        </div>
+
+        <div className={styles.variantEditor}>
+          <div className={styles.variantHeader}>
+            <div>
+              <label className={styles.label}>Poids & prix par format</label>
+              <p className={styles.hint}>Ex : 250g, 500g, 1kg. Le format par dÃ©faut alimente le prix affichÃ©.</p>
+            </div>
+            <button type="button" className={styles.addVariantBtn} onClick={addVariant}>
+              <Plus size={14} />
+              Ajouter un format
+            </button>
+          </div>
+
+          <div className={styles.variantRows}>
+            {variantRows.map((variant, index) => (
+              <div key={variant.id ?? index} className={styles.variantRow}>
+                <label className={styles.defaultVariant}>
+                  <input
+                    type="radio"
+                    name="defaultVariant"
+                    checked={variant.isDefault}
+                    onChange={() => updateVariant(index, { isDefault: true })}
+                  />
+                  DÃ©faut
+                </label>
+                <input
+                  className={styles.input}
+                  value={variant.label}
+                  onChange={(event) => updateVariant(index, { label: event.target.value })}
+                  placeholder="Poids, ex : 500g"
+                />
+                <input
+                  className={styles.input}
+                  value={variant.price}
+                  type="number"
+                  step="0.01"
+                  onChange={(event) => updateVariant(index, { price: event.target.value })}
+                  placeholder="Prix"
+                />
+                <input
+                  className={styles.input}
+                  value={variant.compareAt}
+                  type="number"
+                  step="0.01"
+                  onChange={(event) => updateVariant(index, { compareAt: event.target.value })}
+                  placeholder="Prix barrÃ©"
+                />
+                <button
+                  type="button"
+                  className={styles.removeVariantBtn}
+                  onClick={() => removeVariant(index)}
+                  aria-label="Supprimer le format"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -417,6 +543,20 @@ export function ProductForm({ product }: { product?: Product }) {
             <span className={styles.checkboxText}>
               Publié
               <small>Visible dans la boutique</small>
+            </span>
+          </label>
+
+          <label className={styles.checkboxLabel}>
+            <input
+              className={styles.checkbox}
+              name="isComingSoon"
+              type="checkbox"
+              defaultChecked={product?.isComingSoon}
+            />
+            <span className={styles.checkboxBox} />
+            <span className={styles.checkboxText}>
+              Sera disponible bientÃ´t
+              <small>Visible, mais impossible Ã  ajouter au panier</small>
             </span>
           </label>
         </div>

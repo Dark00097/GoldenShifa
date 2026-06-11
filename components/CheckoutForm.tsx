@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { apiFetch } from '@/lib/api';
 import { useCart } from '@/lib/cart';
+import { itemVariant } from '@/lib/product';
 import { useToast } from '@/lib/toast';
 import styles from './CheckoutForm.module.css';
 
@@ -32,7 +33,11 @@ export function CheckoutForm() {
         method: 'POST',
         data: {
           couponCode: couponCode || undefined,
-          items: items.map((i) => ({ productId: i.product.id, quantity: i.quantity })),
+          items: items.map((i) => ({
+            productId: i.product.id,
+            variantId: itemVariant(i)?.id ?? i.variantId ?? undefined,
+            quantity: i.quantity
+          })),
           address: {
             fullName:   form.get('fullName'),
             email:      form.get('email'),

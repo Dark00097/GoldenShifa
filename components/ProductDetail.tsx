@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import { ArrowRight, Award, Flower2, Heart, Leaf, ShoppingBag, Truck } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { money } from '@/lib/api';
 import { useCart } from '@/lib/cart';
+import { activeVariants, defaultVariant, selectedCompareAt, selectedPrice, selectedWeight } from '@/lib/product';
 import { useToast } from '@/lib/toast';
 import { Product } from '@/types';
 import { HomeProductCard } from './HomeProductCard';
@@ -22,13 +23,21 @@ export function ProductDetail({
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useCart();
   const toast = useToast();
+  const variants = useMemo(() => activeVariants(product), [product]);
+  const [variantId, setVariantId] = useState<number | null>(defaultVariant(product)?.id ?? null);
+  const selectedVariant = variants.find((variant) => variant.id === variantId) || defaultVariant(product);
+  const price = selectedPrice(product, selectedVariant);
+  const compareAt = selectedCompareAt(product, selectedVariant);
+  const weight = selectedWeight(product, selectedVariant);
   const stock = product.inventory?.stock ?? 0;
+  const isComingSoon = Boolean(product.isComingSoon);
+  const canOrder = stock > 0 && !isComingSoon;
   const maxStock = 100;
   const stockPct = Math.min(100, Math.round((stock / maxStock) * 100));
   const isLowStock = stock > 0 && stock <= 10;
 
-  const discount = product.compareAt
-    ? Math.round((1 - parseFloat(product.price) / parseFloat(product.compareAt)) * 100)
+  const discount = compareAt
+    ? Math.round((1 - parseFloat(price) / parseFloat(compareAt)) * 100)
     : null;
 
   return (
@@ -82,9 +91,9 @@ export function ProductDetail({
 
               {/* Price block */}
               <div className={styles.priceBlock}>
-                <span className={styles.price}>{money(product.price)}</span>
-                {product.compareAt && (
-                  <span className={styles.compareAt}>{money(product.compareAt)}</span>
+                <span className={styles.price}>{money(price)}</span>
+                {compareAt && (
+                  <span className={styles.compareAt}>{money(compareAt)}</span>
                 )}
                 {discount && (
                   <span className={styles.discountBadge}>−{discount}%</span>
@@ -94,6 +103,25 @@ export function ProductDetail({
               {/* Description */}
               {product.description && (
                 <p className={styles.description}>{product.description}</p>
+              )}
+
+              {variants.length > 1 && (
+                <div className={styles.variantSection}>
+                  <span className={styles.variantLabel}>Choisir le poids</span>
+                  <div className={styles.variantGrid}>
+                    {variants.map((variant) => (
+                      <button
+                        key={variant.id}
+                        type="button"
+                        className={`${styles.variantButton} ${variant.id === selectedVariant?.id ? styles.variantButtonActive : ''}`}
+                        onClick={() => setVariantId(variant.id)}
+                      >
+                        <span>{variant.label}</span>
+                        <strong>{money(variant.price)}</strong>
+                      </button>
+                    ))}
+                  </div>
+                </div>
               )}
 
               {/* Meta pills */}
@@ -107,17 +135,17 @@ export function ProductDetail({
                 <div className={styles.metaPill}>
                   <span className={styles.metaPillLabel}>Format</span>
                   <span className={styles.metaPillValue}>
-                    {product.weight || 'Selon produit'}
+                    {weight || 'Selon produit'}
                   </span>
                 </div>
                 <div
                   className={`${styles.metaPill} ${
-                    stock > 0 ? styles.metaPillInStock : styles.metaPillOutOfStock
+                    canOrder ? styles.metaPillInStock : styles.metaPillOutOfStock
                   }`}
                 >
                   <span className={styles.metaPillLabel}>Disponibilité</span>
                   <span className={styles.metaPillValue}>
-                    {stock > 0 ? `En stock (${stock})` : 'Rupture de stock'}
+                    {isComingSoon ? 'Sera disponible bientôt' : stock > 0 ? `En stock (${stock})` : 'Rupture de stock'}
                   </span>
                 </div>
               </div>
@@ -125,7 +153,7 @@ export function ProductDetail({
               <hr className={styles.divider} />
 
               {/* Stock bar */}
-              {stock > 0 && (
+              {canOrder && (
                 <div className={styles.stockBarWrap}>
                   <div className={styles.stockBarLabel}>
                     <span>Disponibilité</span>
@@ -154,14 +182,15 @@ export function ProductDetail({
                 />
                 <button
                   className={styles.addToCartBtn}
-                  disabled={stock === 0}
+                  disabled={!canOrder}
                   onClick={() => {
-                    void addItem(product, quantity);
+                    if (!canOrder) return;
+                    void addItem(product, quantity, selectedVariant);
                     toast.success('Produit ajouté au panier.');
                   }}
                 >
                   <ShoppingBag size={18} />
-                  Ajouter au panier
+                  {isComingSoon ? 'Disponible bientôt' : 'Ajouter au panier'}
                 </button>
                 <button
                   className={styles.wishlistBtn}

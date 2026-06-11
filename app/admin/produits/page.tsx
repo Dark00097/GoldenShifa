@@ -8,6 +8,7 @@ import { AdminShell } from '@/components/AdminShell';
 import { AdminTable } from '@/components/admin/AdminTable';
 import { ConfirmModal } from '@/components/admin/ConfirmModal';
 import { apiFetch, money } from '@/lib/api';
+import { defaultVariant, selectedCompareAt, selectedPrice, selectedWeight } from '@/lib/product';
 import { useToast } from '@/lib/toast';
 import { Product } from '@/types';
 import styles from './page.module.css';
@@ -85,15 +86,18 @@ export default function AdminProductsPage() {
             {
               header: 'Prix',
               render: (row) => (
-                <span className={styles.priceText}>{money(row.price)}</span>
+                <span className={styles.priceText}>
+                  {money(selectedPrice(row, defaultVariant(row)))}
+                  {selectedWeight(row, defaultVariant(row)) && <small> {selectedWeight(row, defaultVariant(row))}</small>}
+                </span>
               ),
             },
             {
               header: 'Remise',
               render: (row) =>
-                row.compareAt ? (
+                selectedCompareAt(row, defaultVariant(row)) ? (
                   <span className={styles.compareText}>
-                    {money(row.compareAt)}
+                    {money(selectedCompareAt(row, defaultVariant(row))!)}
                   </span>
                 ) : (
                   <span className={styles.dimText}>—</span>
@@ -115,7 +119,7 @@ export default function AdminProductsPage() {
               header: 'Statut',
               render: (row) => (
                 <span className={`${styles.statusBadge} ${row.isActive ? styles.statusActive : styles.statusHidden}`}>
-                  {row.isActive ? 'Publié' : 'Masqué'}
+                  {row.isComingSoon ? 'Bientôt' : row.isActive ? 'Publié' : 'Masqué'}
                 </span>
               ),
             },

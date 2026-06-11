@@ -108,7 +108,8 @@
 /* shared badge base */
 .badgeDiscount,
 .badgeNew,
-.badgeHot {
+.badgeHot,
+.badgeSoon {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -138,6 +139,12 @@
   background: linear-gradient(135deg, #e2a42a, #f6c75b);
   color: #231405;
   box-shadow: 0 4px 14px rgba(201, 125, 10, 0.38);
+}
+
+.badgeSoon {
+  background: linear-gradient(135deg, #3b3020, #6b4b1d);
+  color: #f6c75b;
+  box-shadow: 0 4px 14px rgba(45, 32, 18, 0.5);
 }
 
 /* ─── Bottom content ─────────────────────────────────────────── */
@@ -185,6 +192,14 @@
   color: #f6c75b;
 }
 
+.soonText {
+  color: #f6c75b;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 /* weight pill */
 .weight {
   display: inline-flex;
@@ -198,6 +213,19 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.variantSelect {
+  width: 100%;
+  min-height: 32px;
+  border: 1px solid rgba(217, 154, 32, 0.28);
+  border-radius: 8px;
+  background: rgba(5, 4, 2, 0.74);
+  color: #fff7e5;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 0 9px;
+  outline: none;
 }
 
 /* thin amber divider */
@@ -284,6 +312,13 @@
 .cartBtn:active {
   transform: translateY(0);
   box-shadow: 0 4px 10px rgba(185, 120, 20, 0.24);
+}
+
+.cartBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
 }
 
 /* ─── Shine sweep ────────────────────────────────────────────── */

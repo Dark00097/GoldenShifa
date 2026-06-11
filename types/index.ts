@@ -21,6 +21,17 @@ export type ProductImage = {
   isPrimary: boolean;
 };
 
+export type ProductVariant = {
+  id: number;
+  productId: number;
+  label: string;
+  price: string;
+  compareAt?: string | null;
+  isDefault: boolean;
+  isActive: boolean;
+  sortOrder: number;
+};
+
 export type Product = {
   id: number;
   name: string;
@@ -34,8 +45,10 @@ export type Product = {
   weight?: string | null;
   isFeatured: boolean;
   isActive: boolean;
+  isComingSoon?: boolean;
   category: Category;
   categoryId: number;
+  variants?: ProductVariant[];
   images?: ProductImage[];
   inventory?: {
     id: number;
@@ -47,7 +60,12 @@ export type Product = {
 
 export type CartItem = {
   id?: number;
+  key?: string;
   product: Product;
+  variant?: ProductVariant | null;
+  variantId?: number | null;
+  weightLabel?: string | null;
+  unitPrice?: string;
   productId?: number;
   quantity: number;
 };
@@ -83,6 +101,8 @@ export type Order = {
   items: Array<{
     id: number;
     name: string;
+    productVariantId?: number | null;
+    variantLabel?: string | null;
     quantity: number;
     unitPrice: string;
     total: string;
