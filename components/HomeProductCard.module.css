@@ -214,10 +214,10 @@
 
 /* ─── Buy row ────────────────────────────────────────────────── */
 .buyRow {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  gap: 14px;
   margin-top: 2px;
 }
 
@@ -241,7 +241,7 @@
   font-size: 18px;
   font-weight: 900;
   white-space: nowrap;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
   text-shadow: 0 0 20px rgba(246, 199, 91, 0.35);
 }
 
@@ -342,5 +342,16 @@
 
   .price {
     font-size: 15px;
+  }
+
+  .buyRow {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .cartBtn {
+    justify-content: center;
+    width: 100%;
   }
 }
