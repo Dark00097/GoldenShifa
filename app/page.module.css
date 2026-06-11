@@ -214,7 +214,7 @@
 }
 
 .categoriesSection {
-  padding: 112px 0 78px;
+  padding: 112px 0 118px;
   background: #050402;
 }
 
@@ -382,7 +382,7 @@
 .selectionSection {
   position: relative;
   min-height: 468px;
-  padding: 54px 0 36px;
+  padding: 72px 0 42px;
   background:
     radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.72), transparent 42%),
     linear-gradient(90deg, rgba(214, 158, 61, 0.2), transparent 18%, transparent 82%, rgba(214, 158, 61, 0.18)),
@@ -638,7 +638,11 @@
   }
 
   .categoriesSection {
-    padding-top: 70px;
+    padding: 70px 0 96px;
+  }
+
+  .selectionSection {
+    padding-top: 64px;
   }
 
   .categoryRail,
@@ -705,6 +709,14 @@
   .sectionHeader {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .categoriesSection {
+    padding: 58px 0 76px;
+  }
+
+  .selectionSection {
+    padding-top: 54px;
   }
 
   .sectionHeader h2,
