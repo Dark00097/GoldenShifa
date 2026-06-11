@@ -27,66 +27,6 @@ copy .env.example .env
 npm run dev
 ```
 
-Avant de lancer le backend, importer `goldenshifa.sql` dans phpMyAdmin ou avec la CLI MySQL.
-
-Frontend: `http://localhost:3001`
-
-API: `http://localhost:4000/api`
-
-Si les ports de developpement restent bloques apres un arret force:
-
-```bash
-npm run dev:free-ports
-```
-
-## Base de donnees
-
-Pour XAMPP en local avec l'utilisateur `root` sans mot de passe:
-
-```env
-DATABASE_URL="mysql://root@127.0.0.1:3306/goldenshifa"
-```
-
-Import phpMyAdmin:
-
-1. Ouvrir phpMyAdmin.
-2. Creer ou selectionner la base `goldenshifa`.
-3. Aller dans l'onglet Importer.
-4. Choisir `goldenshifa.sql`.
-5. Lancer l'import.
-
-Import CLI:
-
-```bash
-mysql -u root < goldenshifa.sql
-```
-
-## Variables d'environnement
-
-Voir:
-
-- `.env.example`
-- `client/.env.example`
-- `server/.env.example`
-
-Variables principales:
-
-```env
-NODE_ENV="production"
-DATABASE_URL="mysql://USER:PASSWORD@HOST:3306/goldenshifa"
-JWT_SECRET="replace-with-a-long-random-production-secret"
-JWT_EXPIRES_IN="7d"
-SERVER_PORT="4000"
-CLIENT_URL="https://votre-domaine.com"
-CORS_ORIGINS="https://votre-domaine.com,https://www.votre-domaine.com"
-NEXT_PUBLIC_API_URL="https://api.votre-domaine.com/api"
-NEXT_PUBLIC_SITE_URL="https://votre-domaine.com"
-PAYMENT_PROVIDER="manual"
-AUTH_RATE_LIMIT_WINDOW_MS="900000"
-AUTH_RATE_LIMIT_MAX="20"
-MAX_IMAGE_SIZE_MB="5"
-```
-
 ## Scripts
 
 ```bash
