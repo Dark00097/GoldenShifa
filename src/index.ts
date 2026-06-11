@@ -1,19 +1,29 @@
 import { app } from './app';
 import { env } from './config/env';
+import { ensureSchema } from './lib/schema';
 
 const port = Number(process.env.PORT || env.SERVER_PORT);
 
-const server = app.listen(port, () => {
-  console.log(`GoldenShifa API demarree sur http://localhost:${port}`);
-});
+async function start() {
+  await ensureSchema();
 
-server.on('error', (error: NodeJS.ErrnoException) => {
-  if (error.code === 'EADDRINUSE') {
-    console.error(
-      `Le port ${port} est deja utilise. Fermez l'ancien serveur ou changez SERVER_PORT dans .env.`
-    );
-    process.exit(1);
-  }
+  const server = app.listen(port, () => {
+    console.log(`GoldenShifa API demarree sur http://localhost:${port}`);
+  });
 
-  throw error;
+  server.on('error', (error: NodeJS.ErrnoException) => {
+    if (error.code === 'EADDRINUSE') {
+      console.error(
+        `Le port ${port} est deja utilise. Fermez l'ancien serveur ou changez SERVER_PORT dans .env.`
+      );
+      process.exit(1);
+    }
+
+    throw error;
+  });
+}
+
+start().catch((error) => {
+  console.error('Initialisation API impossible.', error);
+  process.exit(1);
 });

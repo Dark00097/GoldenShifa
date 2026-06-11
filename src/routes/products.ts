@@ -52,10 +52,102 @@ const productSchema = z.object({
   categoryId: z.coerce.number().int(),
   isFeatured: z.coerce.boolean().optional(),
   isActive: z.coerce.boolean().optional(),
+  isComingSoon: z.coerce.boolean().optional(),
   sku: z.string().optional(),
   stock: z.coerce.number().int().nonnegative().optional(),
-  lowStockAt: z.coerce.number().int().nonnegative().optional()
+  lowStockAt: z.coerce.number().int().nonnegative().optional(),
+  variants: z.array(z.object({
+    id: z.coerce.number().int().positive().optional(),
+    label: z.string().trim().min(1),
+    price: z.coerce.number().positive(),
+    compareAt: z.coerce.number().positive().optional().nullable(),
+    isDefault: z.coerce.boolean().optional(),
+    isActive: z.coerce.boolean().optional(),
+    sortOrder: z.coerce.number().int().nonnegative().optional()
+  })).optional()
 });
+
+type ProductVariantInput = NonNullable<z.infer<typeof productSchema>['variants']>[number] & {
+  sortOrder: number;
+  isDefault: boolean;
+  isActive: boolean;
+};
+
+function normalizeVariants(variants?: z.infer<typeof productSchema>['variants']) {
+  const normalized = (variants || [])
+    .filter((variant) => variant.label.trim())
+    .map((variant, index) => ({
+      ...variant,
+      label: variant.label.trim(),
+      compareAt: variant.compareAt ?? null,
+      isDefault: Boolean(variant.isDefault),
+      isActive: variant.isActive ?? true,
+      sortOrder: variant.sortOrder ?? index
+    }));
+
+  if (!normalized.length) return [];
+  if (!normalized.some((variant) => variant.isDefault)) normalized[0].isDefault = true;
+
+  let defaultSeen = false;
+  return normalized.map((variant) => {
+    if (!variant.isDefault) return variant;
+    if (!defaultSeen) {
+      defaultSeen = true;
+      return variant;
+    }
+    return { ...variant, isDefault: false };
+  });
+}
+
+async function saveProductVariants(productId: number, variants: ProductVariantInput[], tx: Parameters<typeof exec>[2]) {
+  const existing = await rows<{ id: number }>('SELECT id FROM ProductVariant WHERE productId = ?', [productId], tx);
+  const submittedIds = new Set(variants.map((variant) => variant.id).filter(Boolean));
+
+  for (const variant of variants) {
+    if (variant.id) {
+      await exec(
+        `
+          UPDATE ProductVariant
+          SET label = ?, price = ?, compareAt = ?, isDefault = ?, isActive = ?, sortOrder = ?, updatedAt = CURRENT_TIMESTAMP(3)
+          WHERE id = ? AND productId = ?
+        `,
+        [variant.label, variant.price, variant.compareAt, variant.isDefault, variant.isActive, variant.sortOrder, variant.id, productId],
+        tx
+      );
+    } else {
+      await exec(
+        `
+          INSERT INTO ProductVariant
+            (productId, label, price, compareAt, isDefault, isActive, sortOrder, createdAt, updatedAt)
+          VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP(3), CURRENT_TIMESTAMP(3))
+        `,
+        [productId, variant.label, variant.price, variant.compareAt, variant.isDefault, variant.isActive, variant.sortOrder],
+        tx
+      );
+    }
+  }
+
+  const removedIds = existing.map((variant) => variant.id).filter((id) => !submittedIds.has(id));
+  if (removedIds.length) {
+    await exec(
+      `UPDATE ProductVariant SET isActive = false, isDefault = false, updatedAt = CURRENT_TIMESTAMP(3) WHERE productId = ? AND id IN (${removedIds.map(() => '?').join(',')})`,
+      [productId, ...removedIds],
+      tx
+    );
+  }
+}
+
+function applyDefaultVariant(productData: any, variants: ProductVariantInput[]) {
+  const defaultVariant = variants.find((variant) => variant.isDefault) || variants[0];
+  if (!defaultVariant) return productData;
+
+  return {
+    ...productData,
+    price: defaultVariant.price,
+    compareAt: defaultVariant.compareAt,
+    weight: defaultVariant.label
+  };
+}
 
 productsRouter.get('/', async (req, res) => {
   const search = req.query.search?.toString();
@@ -109,14 +201,16 @@ adminProductsRouter.get('/:id', async (req, res) => {
 adminProductsRouter.post('/', async (req, res, next) => {
   try {
     const data = productSchema.parse(req.body);
-    const { sku, stock = 0, lowStockAt = 5, ...productData } = data;
+    const { sku, stock = 0, lowStockAt = 5, variants: rawVariants, ...rawProductData } = data;
+    const variants = normalizeVariants(rawVariants);
+    const productData = applyDefaultVariant(rawProductData, variants);
 
     const productId = await transaction(async (tx) => {
       const result = await exec(
         `
           INSERT INTO Product
-            (name, slug, shortDescription, description, price, compareAt, imageUrl, origin, weight, isFeatured, isActive, categoryId, createdAt, updatedAt)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP(3), CURRENT_TIMESTAMP(3))
+            (name, slug, shortDescription, description, price, compareAt, imageUrl, origin, weight, isFeatured, isActive, isComingSoon, categoryId, createdAt, updatedAt)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP(3), CURRENT_TIMESTAMP(3))
         `,
         [
           productData.name,
@@ -130,10 +224,13 @@ adminProductsRouter.post('/', async (req, res, next) => {
           productData.weight ?? null,
           productData.isFeatured ?? false,
           productData.isActive ?? true,
+          productData.isComingSoon ?? false,
           productData.categoryId
         ],
         tx
       );
+
+      if (variants.length) await saveProductVariants(result.insertId, variants, tx);
 
       await exec(
         'INSERT INTO Inventory (productId, sku, stock, lowStockAt, updatedAt) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP(3))',
@@ -163,14 +260,16 @@ adminProductsRouter.put('/:id', async (req, res, next) => {
   try {
     const productId = Number(req.params.id);
     const data = productSchema.partial().parse(req.body);
-    const { sku, stock, lowStockAt, ...productData } = data;
+    const { sku, stock, lowStockAt, variants: rawVariants, ...rawProductData } = data;
+    const variants = rawVariants ? normalizeVariants(rawVariants) : undefined;
+    const productData = variants ? applyDefaultVariant(rawProductData, variants) : rawProductData;
     const currentInventory = await row<any>('SELECT * FROM Inventory WHERE productId = ?', [productId]);
 
     await transaction(async (tx) => {
       const productFields: string[] = [];
       const productValues: unknown[] = [];
 
-      for (const key of ['name', 'shortDescription', 'description', 'price', 'compareAt', 'imageUrl', 'origin', 'weight', 'isFeatured', 'isActive', 'categoryId'] as const) {
+      for (const key of ['name', 'shortDescription', 'description', 'price', 'compareAt', 'imageUrl', 'origin', 'weight', 'isFeatured', 'isActive', 'isComingSoon', 'categoryId'] as const) {
         if (productData[key] !== undefined) {
           productFields.push(`${key} = ?`);
           productValues.push(productData[key]);
@@ -184,6 +283,8 @@ adminProductsRouter.put('/:id', async (req, res, next) => {
         productValues.push(productId);
         await exec(`UPDATE Product SET ${productFields.join(', ')}, updatedAt = CURRENT_TIMESTAMP(3) WHERE id = ?`, productValues, tx);
       }
+
+      if (variants) await saveProductVariants(productId, variants, tx);
 
       if (stock !== undefined || sku !== undefined || lowStockAt !== undefined) {
         const existing = await row<any>('SELECT * FROM Inventory WHERE productId = ?', [productId], tx);

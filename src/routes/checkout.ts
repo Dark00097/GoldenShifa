@@ -8,8 +8,18 @@ import { orderNumber } from '../utils';
 
 export const checkoutRouter = Router();
 
+type CheckoutOrderItem = {
+  product: any;
+  variant: any | null;
+  quantity: number;
+  unitPrice: number;
+  total: number;
+  currentStock: number;
+};
+
 const checkoutItemSchema = z.object({
   productId: z.coerce.number().int().positive(),
+  variantId: z.coerce.number().int().positive().optional().nullable(),
   quantity: z.coerce.number().int().positive()
 });
 
@@ -46,25 +56,47 @@ checkoutRouter.post('/', async (req, res, next) => {
       `,
       uniqueProductIds
     );
+    const variants = await rows<any>(
+      `
+        SELECT *
+        FROM ProductVariant
+        WHERE productId IN (${placeholders}) AND isActive = true
+        ORDER BY isDefault DESC, sortOrder ASC, id ASC
+      `,
+      uniqueProductIds
+    );
 
     if (products.length !== uniqueProductIds.length) {
       return res.status(400).json({ message: 'Un produit est indisponible.' });
     }
 
     let subtotal = 0;
-    const orderItems = data.items.map((item) => {
+    const orderItems: CheckoutOrderItem[] = [];
+    for (const item of data.items) {
       const product = products.find((entry) => entry.id === item.productId)!;
+      const productVariants = variants.filter((entry) => entry.productId === item.productId);
+      const variant = item.variantId
+        ? productVariants.find((entry) => entry.id === item.variantId)
+        : productVariants.find((entry) => bool(entry.isDefault)) || productVariants[0] || null;
       const currentStock = Number(product.inventory_stock ?? 0);
 
-      if (currentStock < item.quantity) {
-        throw new Error(`Stock insuffisant pour ${product.name}.`);
+      if (bool(product.isComingSoon)) {
+        return res.status(400).json({ message: `${product.name} sera disponible bientot.` });
       }
 
-      const unitPrice = Number(product.price);
+      if (item.variantId && !variant) {
+        return res.status(400).json({ message: `Format indisponible pour ${product.name}.` });
+      }
+
+      if (currentStock < item.quantity) {
+        return res.status(400).json({ message: `Stock insuffisant pour ${product.name}.` });
+      }
+
+      const unitPrice = Number(variant?.price ?? product.price);
       const total = unitPrice * item.quantity;
       subtotal += total;
-      return { product, quantity: item.quantity, unitPrice, total, currentStock };
-    });
+      orderItems.push({ product, variant, quantity: item.quantity, unitPrice, total, currentStock });
+    }
 
     const coupon = data.couponCode
       ? await row<any>('SELECT * FROM Coupon WHERE code = ? LIMIT 1', [data.couponCode.toUpperCase()])
@@ -119,8 +151,17 @@ checkoutRouter.post('/', async (req, res, next) => {
 
       for (const item of orderItems) {
         await exec(
-          'INSERT INTO OrderItem (orderId, productId, name, quantity, unitPrice, total) VALUES (?, ?, ?, ?, ?, ?)',
-          [orderResult.insertId, item.product.id, item.product.name, item.quantity, item.unitPrice, item.total],
+          'INSERT INTO OrderItem (orderId, productId, productVariantId, name, variantLabel, quantity, unitPrice, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+          [
+            orderResult.insertId,
+            item.product.id,
+            item.variant?.id ?? null,
+            item.product.name,
+            item.variant?.label ?? item.product.weight ?? null,
+            item.quantity,
+            item.unitPrice,
+            item.total
+          ],
           tx
         );
         await exec('UPDATE Inventory SET stock = stock - ?, updatedAt = CURRENT_TIMESTAMP(3) WHERE productId = ?', [item.quantity, item.product.id], tx);

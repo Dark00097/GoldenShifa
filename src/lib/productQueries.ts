@@ -5,14 +5,14 @@ type Executor = Parameters<typeof rows>[2];
 function productSelect() {
   return `
     p.id, p.name, p.slug, p.shortDescription, p.description, p.price, p.compareAt, p.imageUrl,
-    p.origin, p.weight, p.isFeatured, p.isActive, p.categoryId, p.createdAt, p.updatedAt,
+    p.origin, p.weight, p.isFeatured, p.isActive, p.isComingSoon, p.categoryId, p.createdAt, p.updatedAt,
     c.id AS category_id, c.name AS category_name, c.slug AS category_slug, c.description AS category_description,
     c.imageUrl AS category_imageUrl, c.isActive AS category_isActive,
     i.id AS inventory_id, i.sku AS inventory_sku, i.stock AS inventory_stock, i.lowStockAt AS inventory_lowStockAt
   `;
 }
 
-export function serializeProduct(data: any, images: any[] = []) {
+export function serializeProduct(data: any, images: any[] = [], variants: any[] = []) {
   return {
     id: data.id,
     name: data.name,
@@ -26,6 +26,7 @@ export function serializeProduct(data: any, images: any[] = []) {
     weight: data.weight,
     isFeatured: bool(data.isFeatured),
     isActive: bool(data.isActive),
+    isComingSoon: bool(data.isComingSoon),
     categoryId: data.categoryId,
     category: data.category_id
       ? {
@@ -45,6 +46,16 @@ export function serializeProduct(data: any, images: any[] = []) {
       sortOrder: image.sortOrder,
       isPrimary: bool(image.isPrimary),
       createdAt: image.createdAt
+    })),
+    variants: variants.map((variant) => ({
+      id: variant.id,
+      productId: variant.productId,
+      label: variant.label,
+      price: decimal(variant.price),
+      compareAt: decimal(variant.compareAt),
+      isDefault: bool(variant.isDefault),
+      isActive: bool(variant.isActive),
+      sortOrder: variant.sortOrder
     })),
     inventory: data.inventory_id
       ? {
@@ -77,6 +88,29 @@ async function imagesForProducts(productIds: number[], executor?: Executor) {
   return map;
 }
 
+async function variantsForProducts(productIds: number[], executor?: Executor) {
+  if (!productIds.length) return new Map<number, any[]>();
+
+  const variants = await rows<any>(
+    `
+      SELECT *
+      FROM ProductVariant
+      WHERE productId IN (${productIds.map(() => '?').join(',')}) AND isActive = true
+      ORDER BY isDefault DESC, sortOrder ASC, id ASC
+    `,
+    productIds,
+    executor
+  );
+
+  const map = new Map<number, any[]>();
+  for (const variant of variants) {
+    const current = map.get(variant.productId) || [];
+    current.push(variant);
+    map.set(variant.productId, current);
+  }
+  return map;
+}
+
 export async function findProducts(whereSql = '1 = 1', params: unknown[] = [], orderBy = 'p.createdAt DESC', executor?: Executor) {
   const productRows = await rows<any>(
     `
@@ -91,8 +125,10 @@ export async function findProducts(whereSql = '1 = 1', params: unknown[] = [], o
     executor
   );
 
-  const imageMap = await imagesForProducts(productRows.map((product) => product.id), executor);
-  return productRows.map((product) => serializeProduct(product, imageMap.get(product.id) || []));
+  const productIds = productRows.map((product) => product.id);
+  const imageMap = await imagesForProducts(productIds, executor);
+  const variantMap = await variantsForProducts(productIds, executor);
+  return productRows.map((product) => serializeProduct(product, imageMap.get(product.id) || [], variantMap.get(product.id) || []));
 }
 
 export async function findProductById(id: number, executor?: Executor) {
